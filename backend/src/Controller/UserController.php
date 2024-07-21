@@ -34,12 +34,12 @@ class UserController extends AbstractController
         $email = $data['email'] ?? '';
 
         if (empty($username) || empty($password) || empty($email)) {
-            return new JsonResponse(['error' => 'Missing parameters'], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['error' => 'Something is missing'], Response::HTTP_BAD_REQUEST);
         }
 
         $user = new Login();
         $user->setUsername($username);
-        $user->setPassword(password_hash($password, PASSWORD_BCRYPT)); // Hash the password
+        $user->setPassword(password_hash($password, PASSWORD_BCRYPT));
         $user->setEmail($email);
         $user->setCreatedAt(new \DateTimeImmutable());
         $user->setUpdatedAt(new \DateTime());
@@ -53,6 +53,28 @@ class UserController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        return new JsonResponse(['message' => 'User created successfully'], Response::HTTP_CREATED);
+        return new JsonResponse(['message' => 'User created !'], Response::HTTP_CREATED);
+    }
+
+    #[Route('/api/login', name: 'api_login', methods: ['POST'])]
+    public function login(Request $request, LoginRepository $loginRepository): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $username = $data['username'] ?? '';
+        $password = $data['password'] ?? '';
+
+        if (empty($username) || empty($password)) {
+            return new JsonResponse(['error' => 'Something is missing'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $user = $loginRepository->findOneBy(['username' => $username]);
+
+        if (!$user || !$user->verifyPassword($password)) {
+            return new JsonResponse(['error' => 'Email or password incorrect'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        // Generate a token or session here if needed
+        return new JsonResponse(['message' => 'Welcome !'], Response::HTTP_OK);
     }
 }

@@ -93,4 +93,9 @@ class Login
 
         return $this;
     }
+
+    public function verifyPassword(string $checkPassword): bool
+    {
+        return password_verify($checkPassword, $this->password);
+    }
 }

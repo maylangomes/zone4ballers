@@ -26,7 +26,7 @@ function Signup() {
             const data = await response.json();
             setMessage(data.message);
             setError(null);
-            router.push('/login');
+            // router.push('/login');
         } else {
             const errorData = await response.json();
             setError(errorData.error);
@@ -69,8 +69,8 @@ function Signup() {
                     />
                 </div>
                 <button type="submit">Sign up</button>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                {message && <p style={{ color: 'green' }}>{message}</p>}
+                {error && <p>{error}</p>}
+                {message && <p>{message}</p>}
             </form>
             <br />
             <button type="button" onClick={() => router.push('/')}>

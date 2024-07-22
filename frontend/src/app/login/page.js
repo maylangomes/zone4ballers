@@ -57,8 +57,8 @@ function Login() {
                     />
                 </div>
                 <button type="submit">Login</button>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                {message && <p style={{ color: 'green' }}>{message}</p>}
+                {error && <p>{error}</p>}
+                {message && <p>{message}</p>}
             </form>
             <br />
             <button type="button" onClick={() => router.push('/')}>

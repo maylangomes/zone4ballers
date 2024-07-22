@@ -11,7 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class UserController extends AbstractController
 {
@@ -73,8 +72,7 @@ class UserController extends AbstractController
         if (!$user || !$user->verifyPassword($password)) {
             return new JsonResponse(['error' => 'Email or password incorrect'], Response::HTTP_UNAUTHORIZED);
         }
-
-        // Generate a token or session here if needed
+        
         return new JsonResponse(['message' => 'Welcome !'], Response::HTTP_OK);
     }
 }

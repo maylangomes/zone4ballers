@@ -43,8 +43,6 @@ export default function Login() {
         alert('Welcome!');
         setName('');
         setPassword('');
-
-        // Rediriger vers la page d'accueil ou une autre page
         router.push('/');
       } else {
         alert('Error: Invalid name or password');

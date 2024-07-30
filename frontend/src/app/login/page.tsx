@@ -28,12 +28,14 @@ export default function Login() {
       console.error('Error in select:', error);
       alert('Error in select');
     } else if (data.length === 0) {
-      alert('Error : Invalid name or password');
+      alert('Error: Invalid name or password');
     } else {
       const user = data[0];
       const isPasswordValid = bcrypt.compareSync(password, user.password);
 
       if (isPasswordValid) {
+        localStorage.setItem('username', user.name);
+
         Cookies.set('admin', String(user.admin), { expires: 7, path: '/' });
         const cookies = document.cookie;
         console.log('Cookies:', cookies);
@@ -41,8 +43,9 @@ export default function Login() {
         alert('Welcome!');
         setName('');
         setPassword('');
+        router.push('/');
       } else {
-        alert('Error : Invalid name or password');
+        alert('Error: Invalid name or password');
       }
     }
   };

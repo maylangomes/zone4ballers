@@ -97,9 +97,9 @@ export default function Home() {
 
     fetchData();
 
-    const user = localStorage.getItem('supabase.auth.user');
-    if (user) {
-      console.log('User connected:', JSON.parse(user));
+    const username = localStorage.getItem('username');
+    if (username) {
+      console.log('User connected:', username);
     } else {
       console.log('No user connected');
     }
@@ -120,7 +120,7 @@ export default function Home() {
 
   const handleLogout = () => {
     Cookies.remove('admin');
-    localStorage.removeItem('supabase.auth.user');
+    localStorage.removeItem('username');
     setIsAdmin(false);
   };
 

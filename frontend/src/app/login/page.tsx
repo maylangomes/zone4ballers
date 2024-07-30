@@ -38,9 +38,12 @@ export default function Login() {
         const cookies = document.cookie;
         console.log('Cookies:', cookies);
 
+        localStorage.setItem('supabase.auth.user', JSON.stringify(user));
+        
         alert('Welcome!');
         setName('');
         setPassword('');
+        router.push('/');
       } else {
         alert('Error : Invalid name or password');
       }

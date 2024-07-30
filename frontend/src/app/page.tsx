@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 import { supabase } from '../../utils/supabase/client';
@@ -7,6 +7,7 @@ import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
 import Cookies from 'js-cookie';
 import HandleCategory from '../app/components/handleCategory/page';
+import { decryptData } from '../../utils/crypto';
 
 interface Category {
   id: number;
@@ -97,17 +98,19 @@ export default function Home() {
 
     fetchData();
 
-    const username = localStorage.getItem('username');
-    if (username) {
-      console.log('User connected:', username);
+    const user = localStorage.getItem('username');
+    if (user) {
+      console.log('User connected:', user);
     } else {
       console.log('No user connected');
     }
-    
 
     const adminCookie = Cookies.get('admin');
-    if (adminCookie === 'true') {
-      setIsAdmin(true);
+    if (adminCookie) {
+      const decryptedAdmin = decryptData(adminCookie);
+      if (decryptedAdmin === 'true') {
+        setIsAdmin(true);
+      }
     }
   }, []);
 

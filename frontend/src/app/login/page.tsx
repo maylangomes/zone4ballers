@@ -28,24 +28,26 @@ export default function Login() {
       console.error('Error in select:', error);
       alert('Error in select');
     } else if (data.length === 0) {
-      alert('Error : Invalid name or password');
+      alert('Error: Invalid name or password');
     } else {
       const user = data[0];
       const isPasswordValid = bcrypt.compareSync(password, user.password);
 
       if (isPasswordValid) {
+        localStorage.setItem('username', user.name);
+
         Cookies.set('admin', String(user.admin), { expires: 7, path: '/' });
         const cookies = document.cookie;
         console.log('Cookies:', cookies);
 
-        localStorage.setItem('supabase.auth.user', JSON.stringify(user));
-        
         alert('Welcome!');
         setName('');
         setPassword('');
+
+        // Rediriger vers la page d'accueil ou une autre page
         router.push('/');
       } else {
-        alert('Error : Invalid name or password');
+        alert('Error: Invalid name or password');
       }
     }
   };

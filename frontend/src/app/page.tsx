@@ -7,7 +7,6 @@ import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
 import Cookies from 'js-cookie';
 import HandleCategory from '../app/components/handleCategory/page';
-import { decryptData } from '../../utils/crypto';
 
 interface Category {
   id: number;
@@ -105,13 +104,34 @@ export default function Home() {
       console.log('No user connected');
     }
 
-    const adminCookie = Cookies.get('admin');
-    if (adminCookie) {
-      const decryptedAdmin = decryptData(adminCookie);
-      if (decryptedAdmin === 'true') {
-        setIsAdmin(true);
+    const fetchAdminCookie = async () => {
+      try {
+        const response = await fetch("/api/decrypt_admin", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+          },
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          if (data.isAdmin) {
+            setIsAdmin(true);
+            console.log("décrypté et admin");
+          } else {
+            console.log("décrypté mais pas admin");
+            console.log(data.isAdmin);
+            
+          }
+        } else {
+          console.error("Erreur lors de la requête:", response.statusText);
+        }
+      } catch (error) {
+        console.error("error try fetch :", error);
       }
     }
+    
+    fetchAdminCookie();
   }, []);
 
   const handleUpdate = (id: number, updatedData: Partial<Product>) => {

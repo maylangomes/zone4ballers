@@ -38,6 +38,7 @@ export default function Login() {
         localStorage.setItem('username', user.name);
 
         const encryptedAdmin = encryptData(String(user.admin));
+        console.log('encryptedAdmin:', encryptedAdmin);
         Cookies.set('admin', encryptedAdmin, { expires: 7, path: '/' });
 
         const cookies = document.cookie;

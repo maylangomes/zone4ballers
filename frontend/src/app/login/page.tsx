@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '../../../utils/supabase/client';
 import bcrypt from 'bcryptjs';
 import Cookies from 'js-cookie';
+import { encryptData } from '../../../utils/crypto';
 
 export default function Login() {
   const [name, setName] = useState('');
@@ -36,7 +37,10 @@ export default function Login() {
       if (isPasswordValid) {
         localStorage.setItem('username', user.name);
 
-        Cookies.set('admin', String(user.admin), { expires: 7, path: '/' });
+        const encryptedAdmin = encryptData(String(user.admin));
+        console.log('encryptedAdmin:', encryptedAdmin);
+        Cookies.set('admin', encryptedAdmin, { expires: 7, path: '/' });
+
         const cookies = document.cookie;
         console.log('Cookies:', cookies);
 

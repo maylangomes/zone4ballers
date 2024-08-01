@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 import { supabase } from '../../utils/supabase/client';
@@ -97,17 +97,41 @@ export default function Home() {
 
     fetchData();
 
-    const username = localStorage.getItem('username');
-    if (username) {
-      console.log('User connected:', username);
+    const user = localStorage.getItem('username');
+    if (user) {
+      console.log('User connected:', user);
     } else {
       console.log('No user connected');
     }
 
-    const adminCookie = Cookies.get('admin');
-    if (adminCookie === 'true') {
-      setIsAdmin(true);
+    const fetchAdminCookie = async () => {
+      try {
+        const response = await fetch("/api/decrypt_admin", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+          },
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          if (data.isAdmin) {
+            setIsAdmin(true);
+            console.log("décrypté et admin");
+          } else {
+            console.log("décrypté mais pas admin");
+            console.log(data.isAdmin);
+            
+          }
+        } else {
+          console.error("Erreur lors de la requête:", response.statusText);
+        }
+      } catch (error) {
+        console.error("error try fetch :", error);
+      }
     }
+    
+    fetchAdminCookie();
   }, []);
 
   const handleUpdate = (id: number, updatedData: Partial<Product>) => {

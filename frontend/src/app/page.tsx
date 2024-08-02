@@ -7,6 +7,7 @@ import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
 import Cookies from 'js-cookie';
 import HandleCategory from '../app/components/handleCategory/page';
+import { fetchProducts } from '../../utils/supabase/models/product/page';
 
 interface Category {
   id: number;
@@ -40,41 +41,6 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const { data: dataProducts, error } = await supabase
-        .from('product')
-        .select(`
-          id,
-          name,
-          description,
-          price,
-          details,
-          stock,
-          category_id,
-          category (id, name),
-          color,
-          size,
-          rating,
-          country,
-          is_available,
-          is_new,
-          is_promoted,
-          store_id
-        `);
-      if (error) {
-        console.error('Error fetching products:', error);
-        return;
-      }
-      if (Array.isArray(dataProducts)) {
-        const formattedProducts = dataProducts.map((product) => ({
-          ...product,
-          category: product.category[0],
-        }));
-        setProducts(formattedProducts as Product[]);
-      } else {
-        console.error('Error formatting products:', dataProducts);
-      }
-    };
 
     const fetchUsers = async () => {
       const { data, error } = await supabase.from('user').select();
@@ -90,7 +56,7 @@ export default function Home() {
     };
 
     const fetchData = async () => {
-      await fetchProducts();
+      await fetchProducts({setProducts});
       await fetchUsers();
       setLoading(false);
     };

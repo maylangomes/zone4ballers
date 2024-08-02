@@ -1,13 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '../../utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
 import Cookies from 'js-cookie';
 import HandleCategory from '../app/components/handleCategory/page';
-import { fetchProducts } from '../../utils/supabase/models/product/page';
 
 interface Category {
   id: number;
@@ -36,32 +34,48 @@ interface Product {
 export default function Home() {
   const [users, setUsers] = useState<any[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [loadingUsers, setLoadingUsers] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        console.log('Fetching products...');
+        const response = await fetch('/api/products');
+        if (!response.ok) {
+          throw new Error('Error response fetch products');
+        }
+        const data = await response.json();
+        console.log('Products fetched:', data);
+        setProducts(data);
+      } catch (error) {
+        console.error('Error catch fetch products:', error);
+      } finally {
+        setLoadingProducts(false);
+      }
+    };
 
     const fetchUsers = async () => {
-      const { data, error } = await supabase.from('user').select();
-      if (error) {
-        console.error('Error fetching users:', error);
-        return;
-      }
-      if (Array.isArray(data)) {
+      try {
+        console.log('Fetching users...');
+        const response = await fetch('/api/users');
+        if (!response.ok) {
+          throw new Error('Error response fetch users');
+        }
+        const data = await response.json();
+        console.log('Users fetched:', data);
         setUsers(data);
-      } else {
-        console.error('Error formatting users:', data);
+      } catch (error) {
+        console.error('Error catch fetch users:', error);
+      } finally {
+        setLoadingUsers(false);
       }
     };
 
-    const fetchData = async () => {
-      await fetchProducts({setProducts});
-      await fetchUsers();
-      setLoading(false);
-    };
-
-    fetchData();
+    fetchProducts();
+    fetchUsers();
 
     const user = localStorage.getItem('username');
     if (user) {
@@ -78,7 +92,7 @@ export default function Home() {
             Accept: "application/json",
           },
         });
-  
+
         if (response.ok) {
           const data = await response.json();
           if (data.isAdmin) {
@@ -87,7 +101,6 @@ export default function Home() {
           } else {
             console.log("décrypté mais pas admin");
             console.log(data.isAdmin);
-            
           }
         } else {
           console.error("Erreur lors de la requête:", response.statusText);
@@ -95,8 +108,8 @@ export default function Home() {
       } catch (error) {
         console.error("error try fetch :", error);
       }
-    }
-    
+    };
+
     fetchAdminCookie();
   }, []);
 
@@ -116,8 +129,8 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4">
-      {loading ? (
-        <p className="text-center">Loading products...</p>
+      {loadingProducts ? (
+        <p>Loading products...</p>
       ) : (
         <div>
           <h2 className="text-2xl font-bold mb-4">Products:</h2>
@@ -135,73 +148,73 @@ export default function Home() {
             )}
             {isAdmin && <HandleCategory />}
           </div>
-          <div className="mt-8">
-            {loading ? (
-              <p>Loading users...</p>
-            ) : (
-              <div>
-                <h2>Users :</h2>
-                {users.map((user) => (
-                  <div
-                    key={user.id}
-                    style={{
-                      border: '1px solid #ccc',
-                      padding: '10px',
-                      margin: '10px 0',
-                    }}
-                  >
-                    <h3>{user.name}</h3>
-                    <p>Email: {user.email}</p>
-                    {user.profile_image_url ? (
-                      <img
-                        src={user.profile_image_url}
-                        alt={`${user.name}'s profile`}
-                        style={{
-                          width: '100px',
-                          height: '100px',
-                          borderRadius: '50%',
-                        }}
-                      />
-                    ) : (
-                      <p>No profile image</p>
-                    )}
-                  </div>
-                ))}
-                <button type="button" onClick={() => router.push('/signup')}>
-                  Sign up
-                </button>
-                <br />
-                <button type="button" onClick={() => router.push('/login')}>
-                  Login
-                </button>
-              </div>
-            )}
-          </div>
-          <div className="mt-8">
-            <button
-              type="button"
-              className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
-              onClick={() => router.push('/signup')}
-            >
-              Sign up
-            </button>
-            <button
-              type="button"
-              className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
-              onClick={() => router.push('/login')}
-            >
-              Login
-            </button>
-            <button
-              type="button"
-              className="bg-red-500 text-white px-4 py-2 rounded mt-2"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          </div>
         </div>
       )}
+      <div className="mt-8">
+        {loadingUsers ? (
+          <p>Loading users...</p>
+        ) : (
+          <div>
+            <h2>Users :</h2>
+            {users.map((user) => (
+              <div
+                key={user.id}
+                style={{
+                  border: '1px solid #ccc',
+                  padding: '10px',
+                  margin: '10px 0',
+                }}
+              >
+                <h3>{user.name}</h3>
+                <p>Email: {user.email}</p>
+                {user.profile_image_url ? (
+                  <img
+                    src={user.profile_image_url}
+                    alt={`${user.name}'s profile`}
+                    style={{
+                      width: '100px',
+                      height: '100px',
+                      borderRadius: '50%',
+                    }}
+                  />
+                ) : (
+                  <p>No profile image</p>
+                )}
+              </div>
+            ))}
+            <button type="button" onClick={() => router.push('/signup')}>
+              Sign up
+            </button>
+            <br />
+            <button type="button" onClick={() => router.push('/login')}>
+              Login
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="mt-8">
+        <button
+          type="button"
+          className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
+          onClick={() => router.push('/signup')}
+        >
+          Sign up
+        </button>
+        <button
+          type="button"
+          className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
+          onClick={() => router.push('/login')}
+        >
+          Login
+        </button>
+        <button
+          type="button"
+          className="bg-red-500 text-white px-4 py-2 rounded mt-2"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+      </div>
     </div>
   );
 }

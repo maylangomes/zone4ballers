@@ -6,13 +6,14 @@ import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
 import Cookies from 'js-cookie';
 import HandleCategory from '../app/components/handleCategory/page';
+import FetchProducts from '../../utils/supabase/controller/productController/page';
 
-interface Category {
+export interface Category {
   id: number;
   name: string;
 }
 
-interface Product {
+export interface Product {
   id: number;
   name: string;
   description: string;
@@ -40,23 +41,6 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        console.log('Fetching products...');
-        const response = await fetch('/api/products');
-        if (!response.ok) {
-          throw new Error('Error response fetch products');
-        }
-        const data = await response.json();
-        console.log('Products fetched:', data);
-        setProducts(data);
-      } catch (error) {
-        console.error('Error catch fetch products:', error);
-      } finally {
-        setLoadingProducts(false);
-      }
-    };
-
     const fetchUsers = async () => {
       try {
         console.log('Fetching users...');
@@ -74,7 +58,6 @@ export default function Home() {
       }
     };
 
-    fetchProducts();
     fetchUsers();
 
     const user = localStorage.getItem('username');
@@ -129,6 +112,7 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4">
+      <FetchProducts setProducts={setProducts} setLoadingProducts={setLoadingProducts} />
       {loadingProducts ? (
         <p>Loading products...</p>
       ) : (

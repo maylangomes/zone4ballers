@@ -1,7 +1,10 @@
-import { supabase } from './../../../../utils/supabase/client';
+import { supabase } from '../../../../utils/supabase/client';
+import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function POST(request: Request) {
   try {
+    const { filter } = await request.json();
+
     const { data: dataProducts, error } = await supabase
       .from('product')
       .select(`
@@ -24,7 +27,7 @@ export async function GET() {
       `);
     
     if (error) {
-      return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     const formattedProducts = dataProducts.map((product) => ({
@@ -32,8 +35,8 @@ export async function GET() {
       category: product.category[0],
     }));
 
-    return new Response(JSON.stringify(formattedProducts), { status: 200 });
+    return NextResponse.json(formattedProducts, { status: 200 });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

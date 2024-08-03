@@ -6,7 +6,8 @@ import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
 import Cookies from 'js-cookie';
 import HandleCategory from '../app/components/handleCategory/page';
-import FetchProducts from '../../utils/supabase/controller/productController/page';
+import FetchProducts from './components/displayProduct/page';
+import FetchUsers from './components/displayUsers/page';
 
 export interface Category {
   id: number;
@@ -41,25 +42,6 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        console.log('Fetching users...');
-        const response = await fetch('/api/users');
-        if (!response.ok) {
-          throw new Error('Error response fetch users');
-        }
-        const data = await response.json();
-        console.log('Users fetched:', data);
-        setUsers(data);
-      } catch (error) {
-        console.error('Error catch fetch users:', error);
-      } finally {
-        setLoadingUsers(false);
-      }
-    };
-
-    fetchUsers();
-
     const user = localStorage.getItem('username');
     if (user) {
       console.log('User connected:', user);
@@ -69,10 +51,10 @@ export default function Home() {
 
     const fetchAdminCookie = async () => {
       try {
-        const response = await fetch("/api/decrypt_admin", {
-          method: "POST",
+        const response = await fetch('/api/decrypt_admin', {
+          method: 'POST',
           headers: {
-            Accept: "application/json",
+            Accept: 'application/json',
           },
         });
 
@@ -80,16 +62,16 @@ export default function Home() {
           const data = await response.json();
           if (data.isAdmin) {
             setIsAdmin(true);
-            console.log("décrypté et admin");
+            console.log('décrypté et admin');
           } else {
-            console.log("décrypté mais pas admin");
+            console.log('décrypté mais pas admin');
             console.log(data.isAdmin);
           }
         } else {
-          console.error("Erreur lors de la requête:", response.statusText);
+          console.error('Erreur lors de la requête:', response.statusText);
         }
       } catch (error) {
-        console.error("error try fetch :", error);
+        console.error('error try fetch :', error);
       }
     };
 
@@ -112,7 +94,10 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4">
-      <FetchProducts setProducts={setProducts} setLoadingProducts={setLoadingProducts} />
+      <FetchProducts
+        setProducts={setProducts}
+        setLoadingProducts={setLoadingProducts}
+      />
       {loadingProducts ? (
         <p>Loading products...</p>
       ) : (
@@ -135,6 +120,7 @@ export default function Home() {
         </div>
       )}
       <div className="mt-8">
+        <FetchUsers setUsers={setUsers} setLoadingUsers={setLoadingUsers} />
         {loadingUsers ? (
           <p>Loading users...</p>
         ) : (

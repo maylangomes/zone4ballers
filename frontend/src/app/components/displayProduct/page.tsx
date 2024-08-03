@@ -11,7 +11,14 @@ const FetchProducts = ({ setProducts, setLoadingProducts }: FetchProductsProps) 
     const fetchProducts = async () => {
       try {
         console.log('Fetching products...');
-        const response = await fetch('/api/products');
+        const response = await fetch('/api/productsController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({ filter: {} }),
+        });
         if (!response.ok) {
           throw new Error('Error response fetch products');
         }

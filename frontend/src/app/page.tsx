@@ -1,3 +1,4 @@
+// page.tsx (Home Component)
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -8,6 +9,10 @@ import Cookies from 'js-cookie';
 import HandleCategory from '../app/components/handleCategory/page';
 import FetchProducts from './components/displayProduct/page';
 import FetchUsers from './components/displayUsers/page';
+import StorageUser from './components/storageUser/page';
+import DecryptAdminCookie from './components/admin-cookie/page';
+import HandleUpdate from './components/handleUpdate/page';
+import HandleLogout from './components/handleLogout/page';
 
 export interface Category {
   id: number;
@@ -41,59 +46,11 @@ export default function Home() {
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const user = localStorage.getItem('username');
-    if (user) {
-      console.log('User connected:', user);
-    } else {
-      console.log('No user connected');
-    }
-
-    const fetchAdminCookie = async () => {
-      try {
-        const response = await fetch('/api/decrypt_admin', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.isAdmin) {
-            setIsAdmin(true);
-            console.log('décrypté et admin');
-          } else {
-            console.log('décrypté mais pas admin');
-            console.log(data.isAdmin);
-          }
-        } else {
-          console.error('Erreur lors de la requête:', response.statusText);
-        }
-      } catch (error) {
-        console.error('error try fetch :', error);
-      }
-    };
-
-    fetchAdminCookie();
-  }, []);
-
-  const handleUpdate = (id: number, updatedData: Partial<Product>) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((product) =>
-        product.id === id ? { ...product, ...updatedData } : product,
-      ),
-    );
-  };
-
-  const handleLogout = () => {
-    Cookies.remove('admin');
-    localStorage.removeItem('username');
-    setIsAdmin(false);
-  };
+  const { handleUpdate } = HandleUpdate({ setProducts });
 
   return (
     <div className="container mx-auto p-4">
+      <DecryptAdminCookie setIsAdmin={setIsAdmin} />
       <FetchProducts
         setProducts={setProducts}
         setLoadingProducts={setLoadingProducts}
@@ -120,6 +77,7 @@ export default function Home() {
         </div>
       )}
       <div className="mt-8">
+        <StorageUser />
         <FetchUsers setUsers={setUsers} setLoadingUsers={setLoadingUsers} />
         {loadingUsers ? (
           <p>Loading users...</p>
@@ -152,13 +110,6 @@ export default function Home() {
                 )}
               </div>
             ))}
-            <button type="button" onClick={() => router.push('/signup')}>
-              Sign up
-            </button>
-            <br />
-            <button type="button" onClick={() => router.push('/login')}>
-              Login
-            </button>
           </div>
         )}
       </div>
@@ -177,13 +128,7 @@ export default function Home() {
         >
           Login
         </button>
-        <button
-          type="button"
-          className="bg-red-500 text-white px-4 py-2 rounded mt-2"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
+        <HandleLogout setIsAdmin={setIsAdmin} />
       </div>
     </div>
   );

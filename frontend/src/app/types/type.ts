@@ -23,6 +23,7 @@ export interface ProductWithCategory {
 }
 
 export interface Product {
+  category: any;
   id: number;
   name: string;
   description: string;

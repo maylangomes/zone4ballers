@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
@@ -22,6 +22,9 @@ export default function Home() {
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const router = useRouter();
+
+  // mémorise le filtre pour éviter les rerender inf
+  const memoizedFilter = useMemo(() => ({ categoryId: categoryFilter }), [categoryFilter]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -49,14 +52,41 @@ export default function Home() {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    const fetchAllProducts = async () => {
+      try {
+        const response = await fetch('/api/controllers/productsController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({ filter: {} }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching products');
+        }
+
+        const data = await response.json();
+        setProducts(data);
+        setLoadingProducts(false);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchAllProducts();
+  }, []);
+
   return (
     <div className="container mx-auto p-4">
       <DecryptAdminCookie setIsAdmin={setIsAdmin} />
-      <FetchCategories setCategories={setCategories} setCategoryFilter={setCategoryFilter} categories={categories} />
+      <FetchCategories setCategoryFilter={setCategoryFilter} categories={categories} />
       <FetchProducts
         setProducts={setProducts}
         setLoadingProducts={setLoadingProducts}
-        filter={{ categoryId: categoryFilter }}
+        filter={memoizedFilter}
       />
       {loadingProducts ? (
         <p>Loading products...</p>

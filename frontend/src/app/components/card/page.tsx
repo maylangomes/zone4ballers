@@ -6,7 +6,7 @@ export default function Card({ product }: CardProps) {
 
   const handleClick = () => {
     localStorage.setItem('selectedProductId', product.id.toString());
-    router.push(`../../detailsProducts/${product.id}`);
+    router.push(`../../pages/detailsProducts/${product.id}`);
   };
 
   return (

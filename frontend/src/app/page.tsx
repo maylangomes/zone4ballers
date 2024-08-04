@@ -91,14 +91,14 @@ export default function Home() {
         <button
           type="button"
           className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
-          onClick={() => router.push('/signup')}
+          onClick={() => router.push('/pages/signup')}
         >
           Sign up
         </button>
         <button
           type="button"
           className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
-          onClick={() => router.push('/login')}
+          onClick={() => router.push('/pages/login')}
         >
           Login
         </button>

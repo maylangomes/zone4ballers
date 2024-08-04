@@ -52,7 +52,7 @@ export default function AdminCard({ product, onUpdate }: AdminCardProps) {
 
   const handleClick = () => {
     localStorage.setItem('selectedProductId', product.id.toString());
-    router.push(`../../detailsProducts/${product.id}`);
+    router.push(`../../pages/detailsProducts/${product.id}`);
   };
 
   const handleEdit = () => {

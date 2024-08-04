@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
-import { supabase } from '../../../utils/supabase/client';
+import { supabase } from '../../../../utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import bcrypt from 'bcryptjs';
 
@@ -95,7 +95,7 @@ export default function AddUser() {
         Home
       </button>
       <br />
-      <button type="button" onClick={() => router.push('/login')}>
+      <button type="button" onClick={() => router.push('/pages/login')}>
         Login
       </button>
     </div>

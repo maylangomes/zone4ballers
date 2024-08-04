@@ -2,10 +2,10 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../../../utils/supabase/client';
+import { supabase } from '../../../../utils/supabase/client';
 import bcrypt from 'bcryptjs';
 import Cookies from 'js-cookie';
-import { encryptData } from '../../../utils/crypto';
+import { encryptData } from '../../../../utils/crypto';
 
 export default function Login() {
   const [name, setName] = useState('');
@@ -75,7 +75,7 @@ export default function Login() {
         Home
       </button>
       <br />
-      <button type="button" onClick={() => router.push('/signup')}>
+      <button type="button" onClick={() => router.push('/pages/signup')}>
         Sign Up
       </button>
     </div>

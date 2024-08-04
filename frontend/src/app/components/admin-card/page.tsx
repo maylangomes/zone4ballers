@@ -1,29 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../../../utils/supabase/client';
-
-interface Category {
-  id: number;
-  name: string;
-}
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  details: string;
-  stock: number;
-  category_id: number;
-  color: string;
-  size: string;
-  rating: number;
-  country: string;
-  is_available: boolean;
-  is_new: boolean;
-  is_promoted: boolean;
-  store_id: number;
-}
+import { Product } from '@/app/types/type';
+import { Category } from '@/app/types/type';
 
 interface AdminCardProps {
   product: Product;
@@ -172,7 +151,7 @@ export default function AdminCard({ product, onUpdate }: AdminCardProps) {
           />
           <select
             name="is_available"
-            value={formData.is_available ? "true" : "false"}
+            value={formData.is_available ? 'true' : 'false'}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
           >
@@ -181,7 +160,7 @@ export default function AdminCard({ product, onUpdate }: AdminCardProps) {
           </select>
           <select
             name="is_new"
-            value={formData.is_new ? "true" : "false"}
+            value={formData.is_new ? 'true' : 'false'}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
           >
@@ -190,7 +169,7 @@ export default function AdminCard({ product, onUpdate }: AdminCardProps) {
           </select>
           <select
             name="is_promoted"
-            value={formData.is_promoted ? "true" : "false"}
+            value={formData.is_promoted ? 'true' : 'false'}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
           >

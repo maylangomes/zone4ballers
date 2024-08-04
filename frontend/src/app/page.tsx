@@ -1,51 +1,25 @@
-// page.tsx (Home Component)
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
-import Cookies from 'js-cookie';
 import HandleCategory from '../app/components/handleCategory/page';
-import FetchProducts from './components/displayProduct/page';
-import FetchUsers from './components/displayUsers/page';
+import FetchProducts from './components/fetchProduct/page';
+import FetchUsers from './components/fetchUsers/page';
 import StorageUser from './components/storageUser/page';
 import DecryptAdminCookie from './components/admin-cookie/page';
 import HandleUpdate from './components/handleUpdate/page';
 import HandleLogout from './components/handleLogout/page';
-
-export interface Category {
-  id: number;
-  name: string;
-}
-
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  details: string;
-  stock: number;
-  category_id: number;
-  category: Category;
-  color: string;
-  size: string;
-  rating: number;
-  country: string;
-  is_available: boolean;
-  is_new: boolean;
-  is_promoted: boolean;
-  store_id: number;
-}
+import { ProductWithCategory } from './types/type';
 
 export default function Home() {
   const [users, setUsers] = useState<any[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductWithCategory[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
-
   const { handleUpdate } = HandleUpdate({ setProducts });
 
   return (

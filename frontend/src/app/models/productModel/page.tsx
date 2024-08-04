@@ -1,28 +1,5 @@
-import { supabase } from "../../supabase/client";
-
-interface Category {
-  id: number;
-  name: string;
-}
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  details: string;
-  stock: number;
-  category_id: number;
-  category: Category;
-  color: string;
-  size: string;
-  rating: number;
-  country: string;
-  is_available: boolean;
-  is_new: boolean;
-  is_promoted: boolean;
-  store_id: number;
-}
+import { supabase } from "../../../../utils/supabase/client";
+import { ProductWithCategory } from "@/app/types/type";
 
 export const fetchProducts = async ({setProducts}) => {
     const { data: dataProducts, error } = await supabase
@@ -54,7 +31,7 @@ export const fetchProducts = async ({setProducts}) => {
         ...product,
         category: product.category[0],
       }));
-      setProducts(formattedProducts as Product[]);
+      setProducts(formattedProducts as ProductWithCategory[]);
     } else {
       console.error('Error formatting products:', dataProducts);
     }

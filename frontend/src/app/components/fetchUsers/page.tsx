@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
-
-interface FetchUsersProps {
-  setUsers: React.Dispatch<React.SetStateAction<any[]>>;
-  setLoadingUsers: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { FetchUsersProps } from '@/app/types/type';
 
 const FetchUsers = ({ setUsers, setLoadingUsers }: FetchUsersProps) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         console.log('Fetching users...');
-        const response = await fetch('/api/usersController', {
+        const response = await fetch('/api/controllers/usersController', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

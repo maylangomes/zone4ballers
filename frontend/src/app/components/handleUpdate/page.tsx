@@ -1,4 +1,4 @@
-import { Product } from '../../page';
+import { Product } from "@/app/types/type";
 
 interface HandleUpdateProps {
   setProducts: React.Dispatch<React.SetStateAction<Product[]>>;

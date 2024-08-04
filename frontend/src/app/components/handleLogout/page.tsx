@@ -1,10 +1,6 @@
 import Cookies from 'js-cookie';
 
-interface HandleLogoutProps {
-  setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const HandleLogout = ({ setIsAdmin }: HandleLogoutProps) => {
+const HandleLogout = ({ setIsAdmin }:{setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>}) => {
   const handleLogout = () => {
     Cookies.remove('admin');
     localStorage.removeItem('username');

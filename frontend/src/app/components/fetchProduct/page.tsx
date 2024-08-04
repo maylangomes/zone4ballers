@@ -1,17 +1,12 @@
 import { useEffect } from 'react';
-import { Product } from '@/app/page';
-
-interface FetchProductsProps {
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-  setLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>;
-}
+import { FetchProductsProps } from '@/app/types/type';
 
 const FetchProducts = ({ setProducts, setLoadingProducts }: FetchProductsProps) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         console.log('Fetching products...');
-        const response = await fetch('/api/productsController', {
+        const response = await fetch('/api/controllers/productsController', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

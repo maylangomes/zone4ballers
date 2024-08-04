@@ -2,11 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '../../../../utils/supabase/client';
-
-interface Category {
-  id: number;
-  name: string;
-}
+import { Category } from '@/app/types/type';
 
 const HandleCategory = () => {
   const [categories, setCategories] = useState<Category[]>([]);

@@ -1,4 +1,3 @@
-// components/FetchProducts.tsx
 import { useEffect, useRef } from 'react';
 import { FetchProductsProps } from '@/app/types/type';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
@@ -9,8 +9,8 @@ import FetchProducts from './components/fetchProduct/page';
 import FetchUsers from './components/fetchUsers/page';
 import StorageUser from './components/storageUser/page';
 import DecryptAdminCookie from './components/admin-cookie/page';
-import HandleUpdate from './components/handleUpdate/page';
 import HandleLogout from './components/handleLogout/page';
+import FetchCategories from './components/fetchCategories/page';
 import { ProductWithCategory } from './types/type';
 
 export default function Home() {
@@ -19,15 +19,44 @@ export default function Home() {
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const router = useRouter();
-  const { handleUpdate } = HandleUpdate({ setProducts });
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/controllers/categoriesController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({}),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching categories');
+        }
+
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <div className="container mx-auto p-4">
       <DecryptAdminCookie setIsAdmin={setIsAdmin} />
+      <FetchCategories setCategories={setCategories} setCategoryFilter={setCategoryFilter} categories={categories} />
       <FetchProducts
         setProducts={setProducts}
         setLoadingProducts={setLoadingProducts}
+        filter={{ categoryId: categoryFilter }}
       />
       {loadingProducts ? (
         <p>Loading products...</p>
@@ -40,7 +69,7 @@ export default function Home() {
                 <AdminCard
                   key={product.id}
                   product={product}
-                  onUpdate={handleUpdate}
+                  onUpdate={() => {}}
                 />
               ) : (
                 <Card key={product.id} product={product} />

@@ -45,8 +45,11 @@ export interface CardProps {
 }
 
 export interface FetchProductsProps {
-  setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
-  setLoadingProducts: React.Dispatch<React.SetStateAction<boolean>>;
+  setProducts: (products: ProductWithCategory[]) => void;
+  setLoadingProducts: (loading: boolean) => void;
+  filter: {
+    categoryId?: string | null;
+  };
 }
 
 export interface FetchUsersProps {

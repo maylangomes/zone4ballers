@@ -1,4 +1,3 @@
-// models/productModel.ts
 import { supabase } from '../../../../../utils/supabase/client';
 
 export const getAllProducts = async () => {

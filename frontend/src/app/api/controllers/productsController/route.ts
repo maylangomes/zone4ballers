@@ -21,7 +21,6 @@ export async function POST(request: Request) {
         size,
         rating,
         country,
-        is_available,
         is_new,
         is_promoted,
         store_id
@@ -40,6 +39,7 @@ export async function POST(request: Request) {
     const products = dataProducts.map((product) => ({
       ...product,
       category: product.category[0],
+      is_available: product.stock > 0 ? true : false, // Met à jour is_available en fonction du stock
     }));
 
     console.log('Number of products:', products.length);

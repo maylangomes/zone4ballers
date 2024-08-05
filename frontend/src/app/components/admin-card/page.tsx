@@ -10,7 +10,11 @@ interface AdminCardProps {
   onAddToBasket: (product: Product) => void;
 }
 
-export default function AdminCard({ product, onUpdate, onAddToBasket }: AdminCardProps) {
+export default function AdminCard({
+  product,
+  onUpdate,
+  onAddToBasket,
+}: AdminCardProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [formData, setFormData] = useState<Partial<Product>>({
@@ -203,6 +207,11 @@ export default function AdminCard({ product, onUpdate, onAddToBasket }: AdminCar
           <p className="text-lg font-bold mb-4">{product.description}</p>
           <p className="text-lg font-bold mb-4">${product.price}</p>
           <p className="text-lg font-bold mb-4">Category: {categoryName}</p>
+          {!product.is_available ? (
+            <p className="text-teal-500 font-bold mb-4">Unavailable</p>
+          ) : (
+            <p className="text-teal-500 font-bold mb-4">Available</p>
+          )}
           <button
             className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
             onClick={handleEdit}

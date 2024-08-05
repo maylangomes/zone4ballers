@@ -39,58 +39,7 @@ export default function Home() {
     [categoryFilter],
   );
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch('/api/controllers/categoriesController', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify({}),
-        });
 
-        if (!response.ok) {
-          throw new Error('Error fetching categories');
-        }
-
-        const data = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    const fetchAllProducts = async () => {
-      try {
-        const response = await fetch('/api/controllers/productsController', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify({ filter: {} }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Error fetching products');
-        }
-
-        const data = await response.json();
-        setProducts(data);
-        setLoadingProducts(false);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    fetchAllProducts();
-  }, []);
 
   useEffect(() => {
     const savedBasket = localStorage.getItem('basket');
@@ -189,28 +138,23 @@ export default function Home() {
             {users.map((user) => (
               <div
                 key={user.id}
-                style={{
-                  border: '1px solid #ccc',
-                  padding: '10px',
-                  margin: '10px 0',
-                }}
               >
-                <h3>{user.name}</h3>
-                <p>Email: {user.email}</p>
-                {user.profile_image_url ? (
-                  <img
-                    src={user.profile_image_url}
-                    alt={`${user.name}'s profile`}
-                    style={{
-                      width: '100px',
-                      height: '100px',
-                      borderRadius: '50%',
-                    }}
-                  />
-                ) : (
-                  <p>No profile image</p>
-                )}
-              </div>
+                    <h3>{user.name}</h3>
+                    <p>Email: {user.email}</p>
+                    {user.profile_image_url ? (
+                      <img
+                        src={user.profile_image_url}
+                        alt={`${user.name}'s profile`}
+                        style={{
+                          width: '100px',
+                          height: '100px',
+                          borderRadius: '50%',
+                        }}
+                      />
+                    ) : (
+                      <p>No profile picture</p>
+                    )}
+                  </div>
             ))}
           </div>
         )}

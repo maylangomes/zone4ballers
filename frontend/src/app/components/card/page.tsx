@@ -5,9 +5,10 @@ import { Product } from '@/app/types/type';
 
 interface CardProps {
   product: Product;
+  onAddToBasket: (product: Product) => void;
 }
 
-export default function Card({ product }: CardProps) {
+export default function Card({ product, onAddToBasket }: CardProps) {
   const router = useRouter();
   const [categoryName, setCategoryName] = useState<string | null>(null);
 
@@ -42,13 +43,16 @@ export default function Card({ product }: CardProps) {
         <p className="text-lg font-bold mb-4">${product.price}</p>
         <p className="text-lg font-bold mb-4">Category: {categoryName}</p>
         <button
+          className="bg-teal-500 text-white px-4 py-2 rounded"
           onClick={handleClick}
-          className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
         >
           Details
         </button>
-        <button className="bg-teal-500 text-white px-4 py-2 rounded mt-2">
-          Buy Now
+        <button
+          className="bg-teal-500 text-white px-4 py-2 rounded ml-2"
+          onClick={() => onAddToBasket(product)}
+        >
+          Add to basket
         </button>
       </div>
     </div>

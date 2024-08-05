@@ -7,9 +7,10 @@ import { Category } from '@/app/types/type';
 interface AdminCardProps {
   product: Product;
   onUpdate: (id: number, updatedData: Partial<Product>) => void;
+  onAddToBasket: (product: Product) => void;
 }
 
-export default function AdminCard({ product, onUpdate }: AdminCardProps) {
+export default function AdminCard({ product, onUpdate, onAddToBasket }: AdminCardProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [formData, setFormData] = useState<Partial<Product>>({
@@ -214,8 +215,11 @@ export default function AdminCard({ product, onUpdate }: AdminCardProps) {
           >
             Details
           </button>
-          <button className="bg-teal-500 text-white px-4 py-2 rounded mt-2">
-            Buy Now
+          <button
+            className="bg-teal-500 text-white px-4 py-2 rounded mt-2"
+            onClick={() => onAddToBasket(product)}
+          >
+            Add to basket
           </button>
         </div>
       )}

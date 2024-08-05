@@ -11,7 +11,15 @@ import StorageUser from './components/storageUser/page';
 import DecryptAdminCookie from './components/admin-cookie/page';
 import HandleLogout from './components/handleLogout/page';
 import FetchCategories from './components/fetchCategories/page';
+import Basket from './components/basket/page';
 import { ProductWithCategory } from './types/type';
+
+interface BasketItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
 
 export default function Home() {
   const [users, setUsers] = useState<any[]>([]);
@@ -20,11 +28,16 @@ export default function Home() {
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    [],
+  );
+  const [basketItems, setBasketItems] = useState<BasketItem[]>([]);
   const router = useRouter();
 
-  // mémorise le filtre pour éviter les rerender inf
-  const memoizedFilter = useMemo(() => ({ categoryId: categoryFilter }), [categoryFilter]);
+  const memoizedFilter = useMemo(
+    () => ({ categoryId: categoryFilter }),
+    [categoryFilter],
+  );
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -79,10 +92,54 @@ export default function Home() {
     fetchAllProducts();
   }, []);
 
+  useEffect(() => {
+    const savedBasket = localStorage.getItem('basket');
+    if (savedBasket) {
+      console.log('Loaded basket from localStorage:', JSON.parse(savedBasket)); // Log loaded basket
+      setBasketItems(JSON.parse(savedBasket));
+    } else {
+      console.log('No basket found in localStorage');
+    }
+  }, []);
+
+  const handleAddToBasket = (product: ProductWithCategory) => {
+    setBasketItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id === product.id);
+      let updatedItems: BasketItem[];
+      if (existingItem) {
+        updatedItems = prevItems.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        );
+      } else {
+        updatedItems = [...prevItems, { ...product, quantity: 1 }];
+      }
+      localStorage.setItem('basket', JSON.stringify(updatedItems));
+      return updatedItems;
+    });
+  };
+
+  const handleRemoveFromBasket = (id: number) => {
+    setBasketItems((prevItems) => {
+      const updatedItems = prevItems.filter((item) => item.id !== id);
+      localStorage.setItem('basket', JSON.stringify(updatedItems));
+      return updatedItems;
+    });
+  };
+
+  const handleClearBasket = () => {
+    setBasketItems([]);
+    localStorage.removeItem('basket');
+  };
+
   return (
     <div className="container mx-auto p-4">
       <DecryptAdminCookie setIsAdmin={setIsAdmin} />
-      <FetchCategories setCategoryFilter={setCategoryFilter} categories={categories} />
+      <FetchCategories
+        setCategoryFilter={setCategoryFilter}
+        categories={categories}
+      />
       <FetchProducts
         setProducts={setProducts}
         setLoadingProducts={setLoadingProducts}
@@ -100,15 +157,27 @@ export default function Home() {
                   key={product.id}
                   product={product}
                   onUpdate={() => {}}
+                  onAddToBasket={handleAddToBasket}
                 />
               ) : (
-                <Card key={product.id} product={product} />
+                <Card
+                  key={product.id}
+                  product={product}
+                  onAddToBasket={handleAddToBasket}
+                />
               ),
             )}
             {isAdmin && <HandleCategory />}
           </div>
         </div>
       )}
+      <div className="mt-8">
+        <Basket
+          items={basketItems}
+          onRemove={handleRemoveFromBasket}
+          onClear={handleClearBasket}
+        />
+      </div>
       <div className="mt-8">
         <StorageUser />
         <FetchUsers setUsers={setUsers} setLoadingUsers={setLoadingUsers} />

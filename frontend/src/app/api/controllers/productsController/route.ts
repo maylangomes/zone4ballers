@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     const products = dataProducts.map((product) => ({
       ...product,
       category: product.category[0],
-      is_available: product.stock > 0 ? true : false, // Met à jour is_available en fonction du stock
+      is_available: product.stock > 0 ? true : false,
     }));
 
     console.log('Number of products:', products.length);

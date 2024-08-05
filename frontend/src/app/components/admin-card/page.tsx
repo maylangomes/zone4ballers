@@ -212,6 +212,16 @@ export default function AdminCard({
           ) : (
             <p className="text-teal-500 font-bold mb-4">Available</p>
           )}
+          {!product.is_promoted ? (
+            <p className="text-teal-500 font-bold mb-4"></p>
+          ) : (
+            <p className="text-teal-500 font-bold mb-4">On sale</p>
+          )}
+          {!product.is_new ? (
+            <p className="text-teal-500 font-bold mb-4"></p>
+          ) : (
+            <p className="text-teal-500 font-bold mb-4">That's new !</p>
+          )}
           <button
             className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
             onClick={handleEdit}

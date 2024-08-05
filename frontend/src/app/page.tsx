@@ -13,13 +13,7 @@ import HandleLogout from './components/handleLogout/page';
 import FetchCategories from './components/fetchCategories/page';
 import Basket from './components/basket/page';
 import { ProductWithCategory } from './types/type';
-
-interface BasketItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-}
+import useBasket from './components/handleBasket/page';
 
 export default function Home() {
   const [users, setUsers] = useState<any[]>([]);
@@ -31,7 +25,6 @@ export default function Home() {
   const [categories, setCategories] = useState<{ id: string; name: string }[]>(
     [],
   );
-  const [basketItems, setBasketItems] = useState<BasketItem[]>([]);
   const router = useRouter();
 
   const memoizedFilter = useMemo(
@@ -39,48 +32,38 @@ export default function Home() {
     [categoryFilter],
   );
 
-
+  const {
+    basketItems,
+    handleAddToBasket,
+    handleRemoveFromBasket,
+    handleClearBasket,
+  } = useBasket();
 
   useEffect(() => {
-    const savedBasket = localStorage.getItem('basket');
-    if (savedBasket) {
-      console.log('Loaded basket from localStorage:', JSON.parse(savedBasket)); // Log loaded basket
-      setBasketItems(JSON.parse(savedBasket));
-    } else {
-      console.log('No basket found in localStorage');
-    }
-  }, []);
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/controllers/categoriesController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({}),
+        });
 
-  const handleAddToBasket = (product: ProductWithCategory) => {
-    setBasketItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
-      let updatedItems: BasketItem[];
-      if (existingItem) {
-        updatedItems = prevItems.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item,
-        );
-      } else {
-        updatedItems = [...prevItems, { ...product, quantity: 1 }];
+        if (!response.ok) {
+          throw new Error('Error fetching categories');
+        }
+
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
       }
-      localStorage.setItem('basket', JSON.stringify(updatedItems));
-      return updatedItems;
-    });
-  };
+    };
 
-  const handleRemoveFromBasket = (id: number) => {
-    setBasketItems((prevItems) => {
-      const updatedItems = prevItems.filter((item) => item.id !== id);
-      localStorage.setItem('basket', JSON.stringify(updatedItems));
-      return updatedItems;
-    });
-  };
-
-  const handleClearBasket = () => {
-    setBasketItems([]);
-    localStorage.removeItem('basket');
-  };
+    fetchCategories();
+  }, []);
 
   return (
     <div className="container mx-auto p-4">

@@ -39,37 +39,12 @@ export default function Home() {
     handleClearBasket,
   } = useBasket();
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch('/api/controllers/categoriesController', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify({}),
-        });
-
-        if (!response.ok) {
-          throw new Error('Error fetching categories');
-        }
-
-        const data = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
   return (
     <div className="container mx-auto p-4">
       <DecryptAdminCookie setIsAdmin={setIsAdmin} />
       <FetchCategories
         setCategoryFilter={setCategoryFilter}
+        setCategories={setCategories}
         categories={categories}
       />
       <FetchProducts

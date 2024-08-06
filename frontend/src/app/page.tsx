@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
@@ -26,12 +26,10 @@ export default function Home() {
     [],
   );
   const router = useRouter();
-
   const memoizedFilter = useMemo(
     () => ({ categoryId: categoryFilter }),
     [categoryFilter],
   );
-
   const {
     basketItems,
     handleAddToBasket,
@@ -94,25 +92,23 @@ export default function Home() {
           <div>
             <h2>Users :</h2>
             {users.map((user) => (
-              <div
-                key={user.id}
-              >
-                    <h3>{user.name}</h3>
-                    <p>Email: {user.email}</p>
-                    {user.profile_image_url ? (
-                      <img
-                        src={user.profile_image_url}
-                        alt={`${user.name}'s profile`}
-                        style={{
-                          width: '100px',
-                          height: '100px',
-                          borderRadius: '50%',
-                        }}
-                      />
-                    ) : (
-                      <p>No profile picture</p>
-                    )}
-                  </div>
+              <div key={user.id}>
+                <h3>{user.name}</h3>
+                <p>Email: {user.email}</p>
+                {user.profile_image_url ? (
+                  <img
+                    src={user.profile_image_url}
+                    alt={`${user.name}'s profile`}
+                    style={{
+                      width: '100px',
+                      height: '100px',
+                      borderRadius: '50%',
+                    }}
+                  />
+                ) : (
+                  <p>No profile picture</p>
+                )}
+              </div>
             ))}
           </div>
         )}

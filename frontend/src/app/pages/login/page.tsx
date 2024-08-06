@@ -2,64 +2,22 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../../../../utils/supabase/client';
-import bcrypt from 'bcryptjs';
-import Cookies from 'js-cookie';
-import { encryptData } from '../../../../utils/crypto';
+import handleLogin from '@/app/api/controllers/loginController/page';
 
 export default function Login() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-
-  const handleLogin = async (e: FormEvent) => {
-    e.preventDefault();
-
-    if (!name || !password) {
-      alert('Please fill in all inputs');
-      return;
-    }
-
-    const { data, error } = await supabase
-      .from('user')
-      .select('*')
-      .eq('name', name);
-
-    if (error) {
-      console.error('Error in select:', error);
-      alert('Error in select');
-    } else if (data.length === 0) {
-      alert('Error: Invalid name or password');
-    } else {
-      const user = data[0];
-      const isPasswordValid = bcrypt.compareSync(password, user.password);
-
-      if (isPasswordValid) {
-        localStorage.setItem('username', user.name);
-
-        const encryptedAdmin = encryptData(String(user.admin));
-        console.log('encryptedAdmin:', encryptedAdmin);
-        Cookies.set('admin', encryptedAdmin, { expires: 7, path: '/' });
-
-        const cookies = document.cookie;
-        console.log('Cookies:', cookies);
-
-        alert('Welcome!');
-        setName('');
-        setPassword('');
-        router.push('/');
-      } else {
-        alert('Error: Invalid name or password');
-      }
-    }
-  };
+  const IsLoginSuccess = () => {
+    router.push('/');
+  }
 
   return (
     <div>
-      <form onSubmit={handleLogin}>
+      <form onSubmit={(e) => handleLogin(e, name, password, setName, setPassword, IsLoginSuccess)}>
         <input
           type="text"
-          placeholder="Name"
+          placeholder="Name"  
           value={name}
           onChange={(e) => setName(e.target.value)}
         />

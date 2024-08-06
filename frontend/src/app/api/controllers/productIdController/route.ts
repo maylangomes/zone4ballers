@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getProductWithCategory } from './../../models/productIdModel/page';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const { productId } = await request.json();
     const productWithCategory = await getProductWithCategory(productId);

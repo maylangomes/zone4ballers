@@ -1,41 +1,74 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
-import handleLogin from '@/app/api/controllers/loginController/page';
+import { useState } from 'react';
 
-export default function Login() {
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const router = useRouter();
-  const IsLoginSuccess = () => {
-    router.push('/');
-  }
+const UserProfile = () => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loginMessage, setLoginMessage] = useState<string | null>(null);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!username || !email) {
+      setLoginMessage('Please fill in both fields.');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/controllers/loginController', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email }),
+      });
+
+      if (!response.ok) {
+        const result = await response.json();
+        setLoginMessage(result.message);
+        return;
+      }
+
+      const result = await response.json();
+      setLoginMessage(result.message);
+    } catch (error) {
+      setError('An error occurred while logging in.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
-      <form onSubmit={(e) => handleLogin(e, name, password, setName, setPassword, IsLoginSuccess)}>
-        <input
-          type="text"
-          placeholder="Name"  
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
+      <h2>User Profile</h2>
+      <form onSubmit={handleLogin}>
+        <div>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <button type="submit">Login</button>
+        </div>
       </form>
-      <button type="button" onClick={() => router.push('/')}>
-        Home
-      </button>
-      <br />
-      <button type="button" onClick={() => router.push('/pages/signup')}>
-        Sign Up
-      </button>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
+      {loginMessage && <p>{loginMessage}</p>}
     </div>
   );
-}
+};
+
+export default UserProfile;

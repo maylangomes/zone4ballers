@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '../../../../../utils/supabase/client';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const { filter } = await request.json();
     console.log('Request filter:', filter);

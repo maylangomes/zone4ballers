@@ -1,4 +1,3 @@
-// models/productModel.ts (ou productModel/page.ts)
 import { supabase } from './../../../../../utils/supabase/client';
 
 export const getProductWithCategory = async (productId: string) => {

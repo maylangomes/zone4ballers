@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 
 interface LoginFormProps {
@@ -39,6 +37,7 @@ const LoginForm = ({ onLoginMessage, onError, setLoading }: LoginFormProps) => {
         return;
       }
 
+      localStorage.setItem('username', username);
       onLoginMessage(result.message);
     } catch (error) {
       onError('An error occurred while logging in.');

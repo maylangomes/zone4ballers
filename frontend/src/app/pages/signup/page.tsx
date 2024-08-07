@@ -24,7 +24,7 @@ export default function AddUser() {
         Home
       </button>
       <br />
-      <button type="button" onClick={() => router.push('/login')}>
+      <button type="button" onClick={() => router.push('/pages/login')}>
         Login
       </button>
     </div>

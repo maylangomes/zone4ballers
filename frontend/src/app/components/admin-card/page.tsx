@@ -1,6 +1,5 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { supabase } from '../../../../utils/supabase/client';
 import { Product } from '@/app/types/type';
 
 interface AdminCardProps {
@@ -110,17 +109,28 @@ export default function AdminCard({
   };
 
   const handleSave = async () => {
-    const { data, error } = await supabase
-      .from('product')
-      .update(formData)
-      .eq('id', product.id);
+    try {
+      const response = await fetch('/api/controllers/updateProductController', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: product.id,
+          formData,
+        }),
+      });
 
-    if (error) {
-      console.error('Error updating product:', error);
-      alert('Error updating product');
-    } else {
+      if (!response.ok) {
+        throw new Error('Error updating product');
+      }
+
+      const data = await response.json();
       onUpdate(product.id, formData);
       setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating product:', error);
+      alert('Error updating product');
     }
   };
 

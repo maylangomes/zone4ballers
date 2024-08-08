@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '../../../../utils/supabase/client';
 import { Category } from '@/app/types/type';
 
 const HandleCategory = () => {
@@ -10,14 +9,24 @@ const HandleCategory = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data: dataCategories, error } = await supabase
-        .from('category')
-        .select('*');
+      try {
+        const response = await fetch('/api/controllers/categoriesController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({}),
+        });
 
-      if (error) {
+        if (!response.ok) {
+          throw new Error('Error fetching categories');
+        }
+
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
         console.error('Error fetching categories:', error);
-      } else {
-        setCategories(dataCategories);
       }
     };
 
@@ -27,30 +36,46 @@ const HandleCategory = () => {
   const handleAddCategory = async () => {
     if (!newCategoryName) return;
 
-    const { data, error } = await supabase
-      .from('category')
-      .insert([{ name: newCategoryName }])
-      .select();
+    try {
+      const response = await fetch('/api/controllers/addCategoryController', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ newCategoryName }),
+      });
 
-    if (error) {
-      console.error('Error adding category:', error);
-    } else {
-      if (data && data.length > 0) {
-        setCategories((prevCategories) => [...prevCategories, data[0]]);
+      if (!response.ok) {
+        throw new Error('Error adding category');
       }
+
+      const data = await response.json();
+      setCategories((prevCategories) => [...prevCategories, data.category]);
       setNewCategoryName('');
+    } catch (error) {
+      console.error('Error adding category:', error);
     }
   };
 
   const handleDeleteCategory = async (id: number) => {
-    const { error } = await supabase.from('category').delete().eq('id', id);
+    try {
+      const response = await fetch('/api/controllers/deleteCategoryController', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
 
-    if (error) {
-      console.error('Error deleting category:', error);
-    } else {
+      if (!response.ok) {
+        throw new Error('Error deleting category');
+      }
+
       setCategories((prevCategories) =>
         prevCategories.filter((category) => category.id !== id),
       );
+    } catch (error) {
+      console.error('Error deleting category:', error);
     }
   };
 

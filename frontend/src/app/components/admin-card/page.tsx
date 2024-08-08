@@ -2,7 +2,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../../../utils/supabase/client';
 import { Product } from '@/app/types/type';
-import { Category } from '@/app/types/type';
 
 interface AdminCardProps {
   product: Product;
@@ -33,26 +32,72 @@ export default function AdminCard({
     is_promoted: product.is_promoted,
     store_id: product.store_id,
   });
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    [],
+  );
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [categoryName, setCategoryName] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data: dataCategories, error } = await supabase
-        .from('category')
-        .select('id, name');
-      if (error) {
+      try {
+        const response = await fetch('/api/controllers/categoriesController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({}),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching categories');
+        }
+
+        const data = await response.json();
+        console.log('data categorie 1 :', data);
+        console.log('data categorie 2 :', data[1]);
+        console.log('data categorie 3 :', data[2]);
+
+        setCategories(data);
+      } catch (error) {
         console.error('Error fetching categories:', error);
-      } else {
-        setCategories(dataCategories || []);
-        const foundCategory = dataCategories?.find(
-          (category) => category.id === product.category_id,
-        );
-        setCategoryName(foundCategory ? foundCategory.name : null);
       }
     };
 
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    console.log('CATEGORIES HERE', categories);
+  }, [categories]);
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const response = await fetch(
+          '/api/controllers/categoriesByIdController',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ categoryId: product.category_id }),
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error('Error fetching category');
+        }
+
+        const data = await response.json();
+        setCategoryName(data.category ? data.category.name : 'No Category');
+      } catch (error) {
+        console.error('Error fetching category:', error);
+      }
+    };
+
+    fetchCategory();
   }, [product.category_id]);
 
   const handleClick = () => {
@@ -85,7 +130,12 @@ export default function AdminCard({
     >,
   ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name === 'category_id') {
+      setFormData({ ...formData, category_id: parseInt(value) });
+      setSelectedCategory(value);
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   return (

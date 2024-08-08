@@ -1,6 +1,5 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { supabase } from '../../../../utils/supabase/client';
 import { Product } from '@/app/types/type';
 
 interface CardProps {
@@ -11,19 +10,26 @@ interface CardProps {
 export default function Card({ product, onAddToBasket }: CardProps) {
   const router = useRouter();
   const [categoryName, setCategoryName] = useState<string | null>(null);
-
+  
   useEffect(() => {
     const fetchCategory = async () => {
-      const { data: category, error } = await supabase
-        .from('category')
-        .select('name')
-        .eq('id', product.category_id)
-        .single();
+      try {
+        const response = await fetch('/api/controllers/categoriesByIdController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ categoryId: product.category_id }),
+        });
 
-      if (error) {
+        if (!response.ok) {
+          throw new Error('Error fetching category');
+        }
+
+        const data = await response.json();
+        setCategoryName(data.category ? data.category.name : 'No Category');
+      } catch (error) {
         console.error('Error fetching category:', error);
-      } else {
-        setCategoryName(category ? category.name : 'No Category');
       }
     };
 

@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     console.log('Request body:', body);
 
-    const { data, error } = await supabase.from('category').select('id, name');
+    const { data, error } = await supabase.from('category').select('*');
 
     if (error) {
       throw new Error(error.message);

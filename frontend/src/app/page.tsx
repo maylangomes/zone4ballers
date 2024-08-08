@@ -40,6 +40,7 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4">
+      <StorageUser />
       <FetchAdmin setIsAdmin={setIsAdmin} />
       <FetchCategories
         setCategoryFilter={setCategoryFilter}
@@ -84,8 +85,7 @@ export default function Home() {
           onClear={handleClearBasket}
         />
       </div>
-      <div className="mt-8">
-        <StorageUser />
+      {/* <div className="mt-8">
         <FetchUsers setUsers={setUsers} setLoadingUsers={setLoadingUsers} />
         {loadingUsers ? (
           <p>Loading users...</p>
@@ -113,7 +113,7 @@ export default function Home() {
             ))}
           </div>
         )}
-      </div>
+      </div> */}
       <div className="mt-8">
         <button
           type="button"

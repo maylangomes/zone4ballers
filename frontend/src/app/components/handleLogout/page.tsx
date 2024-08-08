@@ -1,10 +1,24 @@
-import Cookies from 'js-cookie';
+const HandleLogout = ({ setIsAdmin }: { setIsAdmin: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
-const HandleLogout = ({ setIsAdmin }:{setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>}) => {
-  const handleLogout = () => {
-    Cookies.remove('admin');
-    localStorage.removeItem('username');
-    setIsAdmin(false);
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/controllers/logoutController', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setIsAdmin(false);
+        localStorage.removeItem('username');
+        console.log('Logout successful');
+      } else {
+        console.error('Error during logout:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error during logout fetch:', error);
+    }
   };
 
   return (

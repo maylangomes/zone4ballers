@@ -13,6 +13,7 @@ import FetchCategories from './components/fetchCategories/page';
 import Basket from './components/basket/page';
 import { ProductWithCategory } from './types/type';
 import useBasket from './components/handleBasket/page';
+import FetchAdmin from './components/fetchAdmin/page';
 
 export default function Home() {
   const [users, setUsers] = useState<any[]>([]);
@@ -37,33 +38,9 @@ export default function Home() {
     handleClearBasket,
   } = useBasket();
 
-  useEffect(() => {
-    const fetchAdminStatus = async () => {
-      try {
-        const response = await fetch('/api/controllers/adminController', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setIsAdmin(data.isAdmin);
-          console.log('ADMIN STATUS:', data.isAdmin);
-        } else {
-          console.error('Error fetching admin status:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error during fetch:', error);
-      }
-    };
-
-    fetchAdminStatus();
-  }, []);
-
   return (
     <div className="container mx-auto p-4">
+      <FetchAdmin setIsAdmin={setIsAdmin} />
       <FetchCategories
         setCategoryFilter={setCategoryFilter}
         setCategories={setCategories}

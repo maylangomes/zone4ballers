@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
@@ -8,7 +8,6 @@ import HandleCategory from '../app/components/handleCategory/page';
 import FetchProducts from './components/fetchProduct/page';
 import FetchUsers from './components/fetchUsers/page';
 import StorageUser from './components/storageUser/page';
-import DecryptAdminCookie from './components/admin-cookie/page';
 import HandleLogout from './components/handleLogout/page';
 import FetchCategories from './components/fetchCategories/page';
 import Basket from './components/basket/page';
@@ -30,6 +29,7 @@ export default function Home() {
     () => ({ categoryId: categoryFilter }),
     [categoryFilter],
   );
+
   const {
     basketItems,
     handleAddToBasket,
@@ -37,9 +37,33 @@ export default function Home() {
     handleClearBasket,
   } = useBasket();
 
+  useEffect(() => {
+    const fetchAdminStatus = async () => {
+      try {
+        const response = await fetch('/api/controllers/adminController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsAdmin(data.isAdmin);
+          console.log('ADMIN STATUS:', data.isAdmin);
+        } else {
+          console.error('Error fetching admin status:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error during fetch:', error);
+      }
+    };
+
+    fetchAdminStatus();
+  }, []);
+
   return (
     <div className="container mx-auto p-4">
-      <DecryptAdminCookie setIsAdmin={setIsAdmin} />
       <FetchCategories
         setCategoryFilter={setCategoryFilter}
         setCategories={setCategories}

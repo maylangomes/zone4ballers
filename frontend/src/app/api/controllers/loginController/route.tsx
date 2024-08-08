@@ -1,24 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllUsers } from '../../models/loginModel/page';
+import bcrypt from 'bcryptjs';
+import { cookies } from 'next/headers';
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, email } = await request.json(); // Récupérer les données du corps de la requête
+    const { username, password } = await request.json();
 
-    if (!username || !email) {
-      return NextResponse.json({ message: 'Username and email are required' }, { status: 400 });
+    if (!username || !password) {
+      return NextResponse.json({ message: 'Username and password are required' }, { status: 400 });
     }
 
     const users = await getAllUsers();
-
-    const user = users.find(
-      (item) => item.name === username && item.email === email
-    );
+    const user = users.find((item) => item.name === username);
 
     if (user) {
-      return NextResponse.json({ message: 'Welcome!' }, { status: 200 });
+      const isPasswordValid = bcrypt.compareSync(password, user.password);
+      if (isPasswordValid) {
+        const isAdmin = user.admin ? 'true' : 'false';
+
+        const response = NextResponse.json({ message: 'Welcome!', isAdmin }, { status: 200 });
+
+        cookies().set('admin', isAdmin, {
+          httpOnly: true, 
+          path: '/', 
+          maxAge: 60 * 60 * 24
+        });
+
+        return response;
+      } else {
+        return NextResponse.json({ message: 'Error: Invalid password' }, { status: 401 });
+      }
     } else {
-      return NextResponse.json({ message: 'Error: Invalid login' }, { status: 401 });
+      return NextResponse.json({ message: 'Error: Invalid username' }, { status: 401 });
     }
   } catch (error) {
     console.error(error);

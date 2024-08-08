@@ -1,25 +1,22 @@
 import { useState } from 'react';
 
 interface LoginFormProps {
-  onLoginMessage: (message: string) => void;
-  onError: (message: string) => void;
   setLoading: (loading: boolean) => void;
 }
 
-const LoginForm = ({ onLoginMessage, onError, setLoading }: LoginFormProps) => {
+const LoginForm = ({ setLoading }: LoginFormProps) => {
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!username || !email) {
-      onLoginMessage('Please fill in both fields.');
+    if (!username || !password) {
+      alert('Please fill in both fields.');
       return;
     }
 
     setLoading(true);
-    onError(null);
 
     try {
       const response = await fetch('/api/controllers/loginController', {
@@ -27,20 +24,21 @@ const LoginForm = ({ onLoginMessage, onError, setLoading }: LoginFormProps) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, email }),
+        body: JSON.stringify({ username, password }),
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        onLoginMessage(result.message);
+        alert(result.message);
         return;
       }
 
       localStorage.setItem('username', username);
-      onLoginMessage(result.message);
+      document.cookie = `admin=${result.isAdmin}; path=/;`;
+      alert('Login successful!');
     } catch (error) {
-      onError('An error occurred while logging in.');
+      alert('An error occurred while logging in.');
     } finally {
       setLoading(false);
     }
@@ -56,10 +54,10 @@ const LoginForm = ({ onLoginMessage, onError, setLoading }: LoginFormProps) => {
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Login</button>
       </div>

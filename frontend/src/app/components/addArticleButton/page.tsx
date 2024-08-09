@@ -1,0 +1,138 @@
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function AddArticleForm() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    price: '',
+    details: '',
+    category_id: '',
+  });
+
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    [],
+  );
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/controllers/categoriesController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({}),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching categories');
+        }
+
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('/api/controllers/addArticleController', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error adding article');
+      }
+
+      const data = await response.json();
+      alert('Article added successfully!');
+      router.push('/');
+    } catch (error) {
+      console.error('Error adding article:', error);
+      alert('Error adding article');
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Ajouter un article</h1>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Nom"
+          onChange={handleChange}
+          value={formData.name}
+          className="border p-2 mb-2 w-full"
+          required
+        />
+        <textarea
+          name="description"
+          placeholder="Description"
+          onChange={handleChange}
+          value={formData.description}
+          className="border p-2 mb-2 w-full"
+          required
+        />
+        <input
+          type="number"
+          name="price"
+          placeholder="Prix"
+          onChange={handleChange}
+          value={formData.price}
+          className="border p-2 mb-2 w-full"
+          required
+        />
+        <textarea
+          name="details"
+          placeholder="Détails"
+          onChange={handleChange}
+          value={formData.details}
+          className="border p-2 mb-2 w-full"
+        />
+        <select
+          name="category_id"
+          value={formData.category_id}
+          onChange={handleChange}
+          className="border p-2 mb-2 w-full"
+          required
+        >
+          <option value="">Sélectionnez une catégorie</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+        <button
+          type="submit"
+          className="bg-teal-500 text-white px-4 py-2 rounded"
+        >
+          Ajouter
+        </button>
+      </form>
+    </div>
+  );
+}

@@ -5,7 +5,6 @@ const FetchUsers = ({ setUsers, setLoadingUsers }: FetchUsersProps) => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        console.log('Fetching users...');
         const response = await fetch('/api/controllers/usersController', {
           method: 'POST',
           headers: {
@@ -17,7 +16,7 @@ const FetchUsers = ({ setUsers, setLoadingUsers }: FetchUsersProps) => {
           throw new Error('Error response fetch users');
         }
         const data = await response.json();
-        console.log('Users fetched:', data);
+        // console.log('Users fetched:', data);
         setUsers(data);
       } catch (error) {
         console.error('Error catch fetch users:', error);

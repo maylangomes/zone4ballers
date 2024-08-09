@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const response = NextResponse.json(
-      { message: 'Logout successfully' },
+      { message: 'Logout successful' },
       { status: 200 },
     );
     cookies().set('admin', '');

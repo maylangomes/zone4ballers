@@ -54,9 +54,8 @@ export default function AdminCard({
         }
 
         const data = await response.json();
-        console.log('data categorie 1 :', data);
-        console.log('data categorie 2 :', data[1]);
-        console.log('data categorie 3 :', data[2]);
+        // console.log('data categorie 1 :', data);
+
 
         setCategories(data);
       } catch (error) {
@@ -68,7 +67,7 @@ export default function AdminCard({
   }, []);
 
   useEffect(() => {
-    console.log('CATEGORIES HERE', categories);
+    // console.log('CATEGORIES HERE', categories);
   }, [categories]);
 
   useEffect(() => {

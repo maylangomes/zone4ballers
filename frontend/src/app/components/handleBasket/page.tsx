@@ -14,10 +14,10 @@ const useBasket = () => {
   useEffect(() => {
     const savedBasket = localStorage.getItem('basket');
     if (savedBasket) {
-      console.log('Loaded basket from localStorage:', JSON.parse(savedBasket)); // Log loaded basket
+      // console.log('Loaded basket from localStorage:', JSON.parse(savedBasket));
       setBasketItems(JSON.parse(savedBasket));
     } else {
-      console.log('No basket found in localStorage');
+      // console.log('No basket found in localStorage');
     }
   }, []);
 

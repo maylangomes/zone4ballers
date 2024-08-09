@@ -4,7 +4,7 @@ import { supabase } from '../../../../../utils/supabase/client';
 export async function POST(request: NextRequest) {
   try {
     const { filter } = await request.json();
-    console.log('Request filter:', filter);
+    // console.log('Request filter:', filter);
 
     let query = supabase.from('product').select(`
         id,
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       is_available: product.stock > 0 ? true : false,
     }));
 
-    console.log('Number of products:', products.length);
+    // console.log('Number of products:', products.length);
 
     return NextResponse.json(products, { status: 200 });
   } catch (error) {

@@ -8,7 +8,7 @@ const FetchProducts = ({ setProducts, setLoadingProducts, filter }: FetchProduct
     const fetchProducts = async () => {
       try {
         setLoadingProducts(true);
-        console.log('Fetching products with filter:', filter);
+        // console.log('Fetch products with filter:', filter);
         
         const response = await fetch('/api/controllers/productsController', {
           method: 'POST',
@@ -24,7 +24,7 @@ const FetchProducts = ({ setProducts, setLoadingProducts, filter }: FetchProduct
         }
 
         const data = await response.json();
-        console.log('Products fetched:', data);
+        // console.log('Products fetched:', data);
         setProducts(data);
       } catch (error) {
         console.error('Error catch fetch products:', error);

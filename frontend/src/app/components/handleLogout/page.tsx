@@ -15,7 +15,8 @@ const HandleLogout = ({
       if (response.ok) {
         setIsAdmin(false);
         localStorage.removeItem('username');
-        console.log('Logout successful');
+        alert('logout successful');
+        // console.log('Logout successful');
       } else {
         console.error('Error during logout:', response.statusText);
       }

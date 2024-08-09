@@ -1,5 +1,8 @@
-const HandleLogout = ({ setIsAdmin }: { setIsAdmin: React.Dispatch<React.SetStateAction<boolean>> }) => {
-
+const HandleLogout = ({
+  setIsAdmin,
+}: {
+  setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const handleLogout = async () => {
     try {
       const response = await fetch('/api/controllers/logoutController', {

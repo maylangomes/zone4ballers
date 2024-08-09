@@ -10,17 +10,20 @@ interface CardProps {
 export default function Card({ product, onAddToBasket }: CardProps) {
   const router = useRouter();
   const [categoryName, setCategoryName] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await fetch('/api/controllers/categoriesByIdController', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          '/api/controllers/categoriesByIdController',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ categoryId: product.category_id }),
           },
-          body: JSON.stringify({ categoryId: product.category_id }),
-        });
+        );
 
         if (!response.ok) {
           throw new Error('Error fetching category');

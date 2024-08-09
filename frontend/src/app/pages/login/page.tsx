@@ -13,9 +13,7 @@ const UserProfile = () => {
     <div>
       <h2>User Profile</h2>
       <StorageUser />
-      <LoginForm
-        setLoading={setLoading}
-      />
+      <LoginForm setLoading={setLoading} />
       {loading && <p>Loading...</p>}
       <button type="button" onClick={() => router.push('/')}>
         Home

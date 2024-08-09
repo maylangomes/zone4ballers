@@ -11,6 +11,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ isAdmin }, { status: 200 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: 'Error fetching admin status' }, { status: 500 });
+    return NextResponse.json(
+      { message: 'Error fetching admin status' },
+      { status: 500 },
+    );
   }
 }

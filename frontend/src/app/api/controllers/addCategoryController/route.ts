@@ -6,7 +6,10 @@ export async function POST(request: NextRequest) {
     const { newCategoryName } = await request.json();
 
     if (!newCategoryName) {
-      return NextResponse.json({ message: 'Category name is required' }, { status: 400 });
+      return NextResponse.json(
+        { message: 'Category name is required' },
+        { status: 400 },
+      );
     }
 
     const { data, error } = await supabase
@@ -15,7 +18,10 @@ export async function POST(request: NextRequest) {
       .select();
 
     if (error) {
-      return NextResponse.json({ message: 'Error adding category', error }, { status: 500 });
+      return NextResponse.json(
+        { message: 'Error adding category', error },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json({ category: data[0] }, { status: 200 });

@@ -1,9 +1,7 @@
 import { supabase } from '../../../../../utils/supabase/client';
 
 export const getAllProducts = async () => {
-  const { data: dataProducts, error } = await supabase
-    .from('product')
-    .select(`
+  const { data: dataProducts, error } = await supabase.from('product').select(`
       id,
       name,
       description,
@@ -21,7 +19,7 @@ export const getAllProducts = async () => {
       is_promoted,
       store_id
     `);
-  
+
   if (error) {
     throw new Error(error.message);
   }

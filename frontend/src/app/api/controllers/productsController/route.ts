@@ -6,9 +6,7 @@ export async function POST(request: NextRequest) {
     const { filter } = await request.json();
     console.log('Request filter:', filter);
 
-    let query = supabase
-      .from('product')
-      .select(`
+    let query = supabase.from('product').select(`
         id,
         name,
         description,
@@ -25,13 +23,13 @@ export async function POST(request: NextRequest) {
         is_promoted,
         store_id
       `);
-    
+
     if (filter.categoryId) {
       query = query.eq('category_id', filter.categoryId);
     }
 
     const { data: dataProducts, error } = await query;
-    
+
     if (error) {
       throw new Error(error.message);
     }

@@ -59,13 +59,16 @@ const HandleCategory = () => {
 
   const handleDeleteCategory = async (id: number) => {
     try {
-      const response = await fetch('/api/controllers/deleteCategoryController', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        '/api/controllers/deleteCategoryController',
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id }),
         },
-        body: JSON.stringify({ id }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error('Error deleting category');

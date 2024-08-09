@@ -8,7 +8,10 @@ export async function POST(request: NextRequest) {
     const { username, password } = await request.json();
 
     if (!username || !password) {
-      return NextResponse.json({ message: 'Username and password are required' }, { status: 400 });
+      return NextResponse.json(
+        { message: 'Username and password are required' },
+        { status: 400 },
+      );
     }
 
     const users = await getAllUsers();
@@ -19,23 +22,35 @@ export async function POST(request: NextRequest) {
       if (isPasswordValid) {
         const isAdmin = user.admin ? 'true' : 'false';
 
-        const response = NextResponse.json({ message: 'Welcome!', isAdmin }, { status: 200 });
+        const response = NextResponse.json(
+          { message: 'Welcome!', isAdmin },
+          { status: 200 },
+        );
 
         cookies().set('admin', isAdmin, {
-          httpOnly: true, 
-          path: '/', 
-          maxAge: 60 * 60 * 24
+          httpOnly: true,
+          path: '/',
+          maxAge: 60 * 60 * 24,
         });
 
         return response;
       } else {
-        return NextResponse.json({ message: 'Error: Invalid password' }, { status: 401 });
+        return NextResponse.json(
+          { message: 'Error: Invalid password' },
+          { status: 401 },
+        );
       }
     } else {
-      return NextResponse.json({ message: 'Error: Invalid username' }, { status: 401 });
+      return NextResponse.json(
+        { message: 'Error: Invalid username' },
+        { status: 401 },
+      );
     }
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ message: 'Error fetching users' }, { status: 500 });
+    return NextResponse.json(
+      { message: 'Error fetching users' },
+      { status: 500 },
+    );
   }
 }

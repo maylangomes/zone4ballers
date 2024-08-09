@@ -10,9 +10,15 @@ export async function DELETE(request: NextRequest) {
       throw new Error('Error deleting category');
     }
 
-    return NextResponse.json({ message: 'Category deleted successfully' }, { status: 200 });
+    return NextResponse.json(
+      { message: 'Category deleted successfully' },
+      { status: 200 },
+    );
   } catch (error) {
     console.error('Error deleting category:', error);
-    return NextResponse.json({ message: 'Error deleting category' }, { status: 500 });
+    return NextResponse.json(
+      { message: 'Error deleting category' },
+      { status: 500 },
+    );
   }
 }

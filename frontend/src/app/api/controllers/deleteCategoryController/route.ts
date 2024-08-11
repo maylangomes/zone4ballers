@@ -4,7 +4,7 @@ import { supabase } from '../../../../../utils/supabase/client';
 export async function DELETE(request: NextRequest) {
   try {
     const { id } = await request.json();
-    const { error } = await supabase.from('category').delete().eq('id', id);
+    const { data, error } = await supabase.from('category').delete().eq('id', id);
 
     if (error) {
       throw new Error('Error deleting category');

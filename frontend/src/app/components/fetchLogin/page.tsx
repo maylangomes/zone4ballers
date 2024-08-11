@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface LoginFormProps {
   setLoading: (loading: boolean) => void;
@@ -7,6 +8,7 @@ interface LoginFormProps {
 const LoginForm = ({ setLoading }: LoginFormProps) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,6 +39,7 @@ const LoginForm = ({ setLoading }: LoginFormProps) => {
       localStorage.setItem('username', username);
       document.cookie = `admin=${result.isAdmin}; path=/;`;
       alert('Login successful!');
+      router.push('/');
     } catch (error) {
       alert('An error occurred while logging in.');
     } finally {

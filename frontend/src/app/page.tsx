@@ -14,6 +14,7 @@ import Basket from './components/basket/page';
 import { ProductWithCategory } from './types/type';
 import useBasket from './components/handleBasket/page';
 import FetchAdmin from './components/fetchAdmin/page';
+import AddArticleForm from './components/addArticleButton/page';
 
 export default function Home() {
   const [users, setUsers] = useState<any[]>([]);
@@ -78,6 +79,9 @@ export default function Home() {
           </div>
         </div>
       )}
+      <div className="container mx-auto p-4">
+        {isAdmin && <AddArticleForm />}
+      </div>
       <div className="mt-8">
         <Basket
           items={basketItems}

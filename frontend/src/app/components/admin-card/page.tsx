@@ -56,7 +56,6 @@ export default function AdminCard({
         const data = await response.json();
         // console.log('data categorie 1 :', data);
 
-
         setCategories(data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -121,7 +120,7 @@ export default function AdminCard({
       });
 
       if (!response.ok) {
-        throw new Error('Error updating product');
+        throw new Error('Error response.ok product');
       }
 
       const data = await response.json();
@@ -144,6 +143,26 @@ export default function AdminCard({
       setSelectedCategory(value);
     } else {
       setFormData({ ...formData, [name]: value });
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch('/api/controllers/deleteProductController', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ id: product.id }),
+      });
+      if (!response.ok) {
+        throw new Error('error response.ok delete');
+      }
+      alert('Product deleted');
+      window.location.reload();
+    } catch (error) {
+      console.error('error fetching delete', error);
+      alert('error fetching delete');
     }
   };
 
@@ -298,6 +317,12 @@ export default function AdminCard({
             onClick={() => onAddToBasket(product)}
           >
             Add to basket
+          </button>
+          <button
+            className="bg-teal-500 text-white px-4 py-2 rounded mt-2"
+            onClick={handleDelete}
+          >
+            Delete
           </button>
         </div>
       )}

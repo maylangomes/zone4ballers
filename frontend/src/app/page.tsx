@@ -39,6 +39,12 @@ export default function Home() {
     handleClearBasket,
   } = useBasket();
 
+  const handleProductDelete = (id: number) => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product.id !== id)
+    );
+  };
+
   return (
     <div className="container mx-auto p-4">
       <StorageUser />
@@ -66,6 +72,7 @@ export default function Home() {
                   product={product}
                   onUpdate={() => {}}
                   onAddToBasket={handleAddToBasket}
+                  onProductDelete={handleProductDelete}
                 />
               ) : (
                 <Card

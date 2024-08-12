@@ -6,12 +6,14 @@ interface AdminCardProps {
   product: Product;
   onUpdate: (id: number, updatedData: Partial<Product>) => void;
   onAddToBasket: (product: Product) => void;
+  onProductDelete: (id: number) => void;
 }
 
 export default function AdminCard({
   product,
   onUpdate,
   onAddToBasket,
+  onProductDelete
 }: AdminCardProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -159,7 +161,7 @@ export default function AdminCard({
         throw new Error('error response.ok delete');
       }
       alert('Product deleted');
-      window.location.reload();
+      onProductDelete(product.id)
     } catch (error) {
       console.error('error fetching delete', error);
       alert('error fetching delete');

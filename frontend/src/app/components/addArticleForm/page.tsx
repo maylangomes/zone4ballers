@@ -53,6 +53,12 @@ export default function AddArticleForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const isConfirmed = window.confirm('Are you sure you want to add this article?');
+  
+    if (!isConfirmed) {
+      return;
+    }
+
     try {
       const response = await fetch('/api/controllers/addArticleController', {
         method: 'POST',
@@ -67,8 +73,7 @@ export default function AddArticleForm() {
       }
 
       const data = await response.json();
-      alert('Article added successfully!');
-      router.push('/');
+      window.location.reload();
     } catch (error) {
       console.error('Error adding article:', error);
       alert('Error adding article');

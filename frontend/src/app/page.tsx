@@ -14,7 +14,7 @@ import Basket from './components/basket/page';
 import { ProductWithCategory } from './types/type';
 import useBasket from './components/handleBasket/page';
 import FetchAdmin from './components/fetchAdmin/page';
-import AddArticleForm from './components/addArticleButton/page';
+import AddArticleForm from './components/addArticleForm/page';
 
 export default function Home() {
   const [users, setUsers] = useState<any[]>([]);
@@ -40,9 +40,12 @@ export default function Home() {
   } = useBasket();
 
   const handleProductDelete = (id: number) => {
-    setProducts((prevProducts) =>
-      prevProducts.filter((product) => product.id !== id)
-    );
+    setProducts((prevProducts) => {
+      console.log(prevProducts);
+      let filter = prevProducts.filter((product) => product.id !== id);
+      console.log("filter :", filter);
+      return filter;
+    });
   };
 
   return (

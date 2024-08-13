@@ -160,7 +160,6 @@ export default function AdminCard({
       if (!response.ok) {
         throw new Error('error response.ok delete');
       }
-      alert('Product deleted');
       onProductDelete(product.id)
     } catch (error) {
       console.error('error fetching delete', error);

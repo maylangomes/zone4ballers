@@ -24,7 +24,7 @@ export default function AdminCard({
     details: product.details,
     stock: product.stock,
     category_id: product.category_id,
-    color: product.color,
+    color_id: product.color_id,
     size: product.size,
     rating: product.rating,
     country: product.country,
@@ -208,7 +208,7 @@ export default function AdminCard({
           <input
             type="text"
             name="color"
-            value={formData.color}
+            value={formData.color_id}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
           />
@@ -285,7 +285,8 @@ export default function AdminCard({
           <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
           <p className="text-lg font-bold mb-4">{product.description}</p>
           <p className="text-lg font-bold mb-4">${product.price}</p>
-          <p className="text-lg font-bold mb-4">Category: {categoryName}</p>
+          <p className="text-lg font-bold mb-4">Color : {product.color_id}</p>
+          <p className="text-lg font-bold mb-4">Category : {categoryName}</p>
           {!product.is_available ? (
             <p className="text-teal-500 font-bold mb-4">Unavailable</p>
           ) : (

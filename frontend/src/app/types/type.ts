@@ -12,7 +12,7 @@ export interface ProductWithCategory {
   stock: number;
   category_id: number;
   category: Category;
-  color: string;
+  color_id: number;
   size: string;
   rating: number;
   country: string;
@@ -31,7 +31,7 @@ export interface Product {
   details: string;
   stock: number;
   category_id: number;
-  color: string;
+  color_id: number;
   size: string;
   rating: number;
   country: string;

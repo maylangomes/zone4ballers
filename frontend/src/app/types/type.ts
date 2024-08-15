@@ -3,6 +3,11 @@ export interface Category {
   name: string;
 }
 
+export interface Color {
+  id: number;
+  name: string;
+}
+
 export interface ProductWithCategory {
   id: number;
   name: string;
@@ -13,6 +18,7 @@ export interface ProductWithCategory {
   category_id: number;
   category: Category;
   color_id: number;
+  color: Color;
   size: string;
   rating: number;
   country: string;
@@ -23,7 +29,6 @@ export interface ProductWithCategory {
 }
 
 export interface Product {
-  category: any;
   id: number;
   name: string;
   description: string;
@@ -31,7 +36,9 @@ export interface Product {
   details: string;
   stock: number;
   category_id: number;
+  category: Category;
   color_id: number;
+  color: Color;
   size: string;
   rating: number;
   country: string;

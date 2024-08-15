@@ -3,25 +3,28 @@ import { supabase } from '../../../../../utils/supabase/client';
 
 export async function POST(request: NextRequest) {
   try {
-    const { categoryId } = await request.json();
+    const { colorId } = await request.json();
 
-    const { data: category, error } = await supabase
-      .from('category')
+    console.log("colorID :", colorId);
+    
+
+    const { data: color, error } = await supabase
+      .from('color')
       .select('name')
-      .eq('id', categoryId)
+      .eq('id', colorId)
       .single();
 
     if (error) {
-      console.error('Error fetching category:', error);
+      console.error('Error fetching controller color first', error);
       return NextResponse.json(
-        { message: 'Error fetching category', error },
+        { message: 'Error fetching controller color response', error },
         { status: 500 },
       );
     }
 
-    return NextResponse.json({ category }, { status: 200 });
+    return NextResponse.json({ color }, { status: 200 });
   } catch (error) {
-    console.error('Error try category request:', error);
+    console.error('Error try request color', error);
     return NextResponse.json(
       { message: 'Internal server error', error },
       { status: 500 },

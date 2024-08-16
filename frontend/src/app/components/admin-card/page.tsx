@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Product } from '@/app/types/type';
-import { NextResponse } from 'next/server';
 
 interface AdminCardProps {
   product: Product;

@@ -39,6 +39,7 @@ export default function AdminCard({
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [colorName, setColorName] = useState<string | null>(null);
+  const [adjustedPrice, setAdjustedPrice] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -57,8 +58,6 @@ export default function AdminCard({
         }
 
         const data = await response.json();
-        // console.log('data categorie 1 :', data);
-
         setCategories(data);
       } catch (error) {
         console.error('Error try fetch categories:', error);
@@ -67,10 +66,6 @@ export default function AdminCard({
 
     fetchCategories();
   }, []);
-
-  useEffect(() => {
-    // console.log('CATEGORIES HERE', categories);
-  }, [categories]);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -104,7 +99,7 @@ export default function AdminCard({
     const fetchColor = async () => {
       try {
         // console.log('body color id:', JSON.stringify({ colorId: product.color_id }));
-        const response = await fetch('api/controllers/colorIdController', {
+        const response = await fetch('/api/controllers/colorIdController', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -113,22 +108,25 @@ export default function AdminCard({
         });
 
         if (!response.ok) {
-          throw new Error('error fetching color');
+          throw new Error('Error fetching color');
         }
 
         const data = await response.json();
+        setColorName(data.colorPrice.name ? data.colorPrice.name : 'No Color');
 
-        // console.log('Data color : ', data);
+        const productAdjustedPrice =
+          data.adjustedPrices.find(
+            (price: { productId: number }) => price.productId === product.id,
+          )?.adjustedPrice || null;
 
-        setColorName(data.color ? data.color.name : 'No color');
-        
+        setAdjustedPrice(productAdjustedPrice);
       } catch (error) {
-        console.error('Error try fetch color');
+        console.error('Error try fetch color:', error);
       }
     };
 
     fetchColor();
-  }, [product.color_id]);
+  }, [product.color_id, product.id]);
 
   const handleClick = () => {
     localStorage.setItem('selectedProductId', product.id.toString());
@@ -189,12 +187,12 @@ export default function AdminCard({
         body: JSON.stringify({ id: product.id }),
       });
       if (!response.ok) {
-        throw new Error('error response.ok delete');
+        throw new Error('Error response.ok delete');
       }
       onProductDelete(product.id);
     } catch (error) {
-      console.error('error try delete product', error);
-      alert('error fetching delete');
+      console.error('Error try delete product', error);
+      alert('Error fetching delete');
     }
   };
 
@@ -318,6 +316,11 @@ export default function AdminCard({
           <p className="text-lg font-bold mb-4">${product.price}</p>
           <p className="text-lg font-bold mb-4">Color : {colorName}</p>
           <p className="text-lg font-bold mb-4">Category : {categoryName}</p>
+          {adjustedPrice !== null && (
+            <p className="text-lg font-bold mb-4">
+              Adjusted Price: ${adjustedPrice.toFixed(2)}
+            </p>
+          )}
           {!product.is_available ? (
             <p className="text-teal-500 font-bold mb-4">Unavailable</p>
           ) : (

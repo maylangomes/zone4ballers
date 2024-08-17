@@ -14,9 +14,7 @@ export default function AddArticleForm() {
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
     [],
   );
-  const [colors, setColors] = useState<{ id: number; name: string }[]>(
-    [],
-  );
+  const [colors, setColors] = useState<{ id: number; name: string }[]>([]);
 
   useEffect(() => {
     const fetchCategories = async () => {

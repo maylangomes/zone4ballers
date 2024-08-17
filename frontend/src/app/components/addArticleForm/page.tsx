@@ -2,16 +2,19 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function AddArticleForm() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
     details: '',
     category_id: '',
+    color_id: '',
   });
 
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
+    [],
+  );
+  const [colors, setColors] = useState<{ id: number; name: string }[]>(
     [],
   );
 
@@ -41,6 +44,32 @@ export default function AddArticleForm() {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    const fetchColor = async () => {
+      try {
+        const response = await fetch('/api/controllers/colorController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({}),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching color');
+        }
+
+        const data = await response.json();
+        setColors(data);
+      } catch (error) {
+        console.error('Error try fetching color:', error);
+      }
+    };
+
+    fetchColor();
+  }, []);
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -53,8 +82,10 @@ export default function AddArticleForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const isConfirmed = window.confirm('Are you sure you want to add this article?');
-  
+    const isConfirmed = window.confirm(
+      'Are you sure you want to add this article?',
+    );
+
     if (!isConfirmed) {
       return;
     }
@@ -128,6 +159,20 @@ export default function AddArticleForm() {
           {categories.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
+            </option>
+          ))}
+        </select>
+        <select
+          name="color_id"
+          value={formData.color_id}
+          onChange={handleChange}
+          className="border p-2 mb-2 w-full"
+          required
+        >
+          <option value="">Sélectionnez une couleur</option>
+          {colors.map((color) => (
+            <option key={color.id} value={color.id}>
+              {color.name}
             </option>
           ))}
         </select>

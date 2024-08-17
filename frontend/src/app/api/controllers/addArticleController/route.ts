@@ -14,6 +14,7 @@ export async function POST(request: Request) {
           price: parseFloat(body.price),
           details: body.details,
           category_id: body.category_id,
+          color_id: body.color_id,
           is_available: true,
           is_new: false,
           is_promoted: false,

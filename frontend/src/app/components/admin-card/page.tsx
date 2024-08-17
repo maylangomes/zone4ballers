@@ -36,6 +36,7 @@ export default function AdminCard({
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
     [],
   );
+  const [colors, setColors] = useState<{ id: number; name: string }[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [colorName, setColorName] = useState<string | null>(null);
@@ -65,6 +66,33 @@ export default function AdminCard({
     };
 
     fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchColors = async () => {
+      try {
+        const response = await fetch('/api/controllers/colorController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({}),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching colors');
+        }
+        fetchColors;
+
+        const data = await response.json();
+        setColors(data);
+      } catch (error) {
+        console.error('Error try fetch colors:', error);
+      }
+    };
+
+    fetchColors();
   }, []);
 
   useEffect(() => {
@@ -138,28 +166,34 @@ export default function AdminCard({
   };
 
   const handleSave = async () => {
-    try {
-      const response = await fetch('/api/controllers/updateProductController', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: product.id,
-          formData,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Error response.ok product');
+    const confirmSave = confirm("Are you sure ?");
+    if (confirmSave) {
+      try {
+        const response = await fetch('/api/controllers/updateProductController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            id: product.id,
+            formData,
+          }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Error response.ok product');
+        }
+  
+        const data = await response.json();
+        if (confirmSave) {
+          onUpdate(product.id, formData);
+          setIsEditing(false);
+          window.location.reload();
+        }
+      } catch (error) {
+        console.error('Error try update product:', error);
+        alert('Error updating product');
       }
-
-      const data = await response.json();
-      onUpdate(product.id, formData);
-      setIsEditing(false);
-    } catch (error) {
-      console.error('Error try update product:', error);
-      alert('Error updating product');
     }
   };
 
@@ -203,12 +237,14 @@ export default function AdminCard({
           <input
             type="text"
             name="name"
+            placeholder="name"
             value={formData.name}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
           />
           <textarea
             name="description"
+            placeholder="description"
             value={formData.description}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
@@ -216,6 +252,7 @@ export default function AdminCard({
           <input
             type="number"
             name="price"
+            placeholder="price"
             value={formData.price}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
@@ -223,6 +260,7 @@ export default function AdminCard({
           <input
             type="text"
             name="details"
+            placeholder="details"
             value={formData.details}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
@@ -230,20 +268,28 @@ export default function AdminCard({
           <input
             type="number"
             name="stock"
+            placeholder="stock"
             value={formData.stock}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
           />
-          <input
-            type="text"
-            name="color"
+          <select
+            name="color_id"
             value={formData.color_id}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
-          />
+          >
+            <option value="">Select Color</option>
+            {colors.map((color) => (
+              <option key={color.id} value={color.id}>
+                {color.name}
+              </option>
+            ))}
+          </select>
           <input
             type="text"
             name="size"
+            placeholder="size"
             value={formData.size}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
@@ -251,6 +297,7 @@ export default function AdminCard({
           <input
             type="number"
             name="rating"
+            placeholder="rating"
             value={formData.rating}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"
@@ -258,6 +305,7 @@ export default function AdminCard({
           <input
             type="text"
             name="country"
+            placeholder="country"
             value={formData.country}
             onChange={handleChange}
             className="border p-2 mb-2 w-full"

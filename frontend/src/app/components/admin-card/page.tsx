@@ -166,24 +166,27 @@ export default function AdminCard({
   };
 
   const handleSave = async () => {
-    const confirmSave = confirm("Are you sure ?");
+    const confirmSave = confirm('Are you sure ?');
     if (confirmSave) {
       try {
-        const response = await fetch('/api/controllers/updateProductController', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          '/api/controllers/updateProductController',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: product.id,
+              formData,
+            }),
           },
-          body: JSON.stringify({
-            id: product.id,
-            formData,
-          }),
-        });
-  
+        );
+
         if (!response.ok) {
           throw new Error('Error response.ok product');
         }
-  
+
         const data = await response.json();
         if (confirmSave) {
           onUpdate(product.id, formData);

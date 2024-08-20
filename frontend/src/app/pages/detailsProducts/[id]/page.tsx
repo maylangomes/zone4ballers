@@ -30,7 +30,6 @@ export default function ProductPage() {
           <p className="text-lg font-bold mb-4">
             Category: {product.categoryName || 'No Category'}
           </p>
-          <p className="text-lg font-bold mb-4">Color: {product.color}</p>
           <p className="text-lg font-bold mb-4">Size: {product.size}</p>
           <p className="text-lg font-bold mb-4">Rating: {product.rating}</p>
           <p className="text-lg font-bold mb-4">Country: {product.country}</p>

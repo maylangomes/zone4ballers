@@ -35,7 +35,7 @@ const FetchIdProduct: React.FC<FetchIdProductProps> = ({ setProduct, setLoading 
           const data = await response.json();
           setProduct(data);
         } catch (error) {
-          console.error('Error fetching product:', error);
+          console.error('Error try fetching product:', error);
         } finally {
           setLoading(false);
         }

@@ -13,7 +13,7 @@ export const getProductWithCategory = async (productId: string) => {
         details,
         stock,
         category_id,
-        color,
+        color_id,
         size,
         rating,
         country,

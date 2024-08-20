@@ -35,7 +35,7 @@ const CreateAccountForm = ({ onSuccess, onError }: CreateAccountFormProps) => {
     formData.append('address', address);
     formData.append('city', city);
     formData.append('state', state);
-    formData.append('postalCode', address);
+    formData.append('postalCode', postalCode);
     formData.append('country', country);
 
 

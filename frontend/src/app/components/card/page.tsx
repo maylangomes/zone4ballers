@@ -12,7 +12,6 @@ export default function Card({ product, onAddToBasket }: CardProps) {
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [colorName, setColorName] = useState<string | null>(null);
 
-
   useEffect(() => {
     const fetchCategory = async () => {
       try {
@@ -62,7 +61,6 @@ export default function Card({ product, onAddToBasket }: CardProps) {
         // console.log('Data color : ', data);
 
         setColorName(data.color ? data.color.name : 'No color');
-        
       } catch (error) {
         console.error('Error try fetch color');
       }

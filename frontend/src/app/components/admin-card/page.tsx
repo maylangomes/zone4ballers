@@ -33,6 +33,7 @@ export default function AdminCard({
     is_promoted: product.is_promoted,
     store_id: product.store_id,
   });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
     [],
   );
@@ -165,10 +166,34 @@ export default function AdminCard({
     setIsEditing(true);
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
+
   const handleSave = async () => {
     const confirmSave = confirm('Are you sure ?');
     if (confirmSave) {
       try {
+        if (selectedFile) {
+          const response = await fetch(
+            '/api/controllers/uploadImageController',
+            {
+              method: 'POST',
+              body: JSON.stringify({
+                productId: product.id,
+                file: selectedFile,
+              }),
+            },
+          );
+
+          if (!response.ok) {
+            const errorMessage = await response.text();
+            console.error('Server error response:', errorMessage);
+            throw new Error(`Error uploading image: ${errorMessage}`);
+          }
+        }
         const response = await fetch(
           '/api/controllers/updateProductController',
           {
@@ -237,6 +262,12 @@ export default function AdminCard({
     <div className="border rounded-lg shadow-lg p-4">
       {isEditing ? (
         <div>
+          <input
+            type="file"
+            onChange={handleFileChange}
+            accept="image/*"
+            className="border p-2 mb-2 w-full"
+          />
           <input
             type="text"
             name="name"

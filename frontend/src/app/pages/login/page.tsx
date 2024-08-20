@@ -10,18 +10,27 @@ const UserProfile = () => {
   const router = useRouter();
 
   return (
-    <div>
-      <h2>User Profile</h2>
+    <div className="container mx-auto p-4 max-w-md bg-white shadow-md rounded-lg">
+      <h2 className="text-3xl font-bold mb-4 text-center">Login</h2>
       <StorageUser />
       <LoginForm setLoading={setLoading} />
-      {loading && <p>Loading...</p>}
-      <button type="button" onClick={() => router.push('/')}>
-        Home
-      </button>
-      <br />
-      <button type="button" onClick={() => router.push('/pages/signup')}>
-        Signup
-      </button>
+      {loading && <p className="text-center text-blue-500">Loading...</p>}
+      <div className="mt-6 flex justify-between">
+        <button
+          type="button"
+          className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
+          onClick={() => router.push('/')}
+        >
+          Home
+        </button>
+        <button
+          type="button"
+          className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
+          onClick={() => router.push('/pages/signup')}
+        >
+          Signup
+        </button>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function AddArticleForm() {
   const [formData, setFormData] = useState({
@@ -80,7 +79,7 @@ export default function AddArticleForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const isConfirmed = window.confirm(
+    const isConfirmed = confirm(
       'Are you sure you want to add this article?',
     );
 

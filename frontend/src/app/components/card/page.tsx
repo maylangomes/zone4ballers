@@ -62,7 +62,7 @@ export default function Card({ product, onAddToBasket }: CardProps) {
 
         // console.log('Data color : ', data);
 
-        setColorName(data.color ? data.color.name : 'No color');
+        setColorName(data.colorPrice.name ? data.colorPrice.name : 'No color');
       } catch (error) {
         console.error('Error try fetch color');
       }

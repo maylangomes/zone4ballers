@@ -6,8 +6,12 @@ export default function AddArticleForm() {
     description: '',
     price: '',
     details: '',
+    stock: '',
     category_id: '',
     color_id: '',
+    size: '',
+    rating: '',
+    country: '',
   });
 
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
@@ -79,10 +83,8 @@ export default function AddArticleForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const isConfirmed = confirm(
-      'Are you sure you want to add this article?',
-    );
-
+    const isConfirmed = confirm('Are you sure you want to add this article?');
+    
     if (!isConfirmed) {
       return;
     }
@@ -144,6 +146,42 @@ export default function AddArticleForm() {
           onChange={handleChange}
           value={formData.details}
           className="border p-2 mb-2 w-full"
+        />
+        <input
+          type="number"
+          name="stock"
+          placeholder="Stock"
+          onChange={handleChange}
+          value={formData.stock}
+          className="border p-2 mb-2 w-full"
+          required
+        />
+        <input
+          type="text"
+          name="size"
+          placeholder="Size"
+          onChange={handleChange}
+          value={formData.size}
+          className="border p-2 mb-2 w-full"
+          required
+        />
+        <input
+          type="number"
+          name="rating"
+          placeholder="Rating"
+          onChange={handleChange}
+          value={formData.rating}
+          className="border p-2 mb-2 w-full"
+          required
+        />
+        <input
+          type="text"
+          name="country"
+          placeholder="Country"
+          onChange={handleChange}
+          value={formData.country}
+          className="border p-2 mb-2 w-full"
+          required
         />
         <select
           name="category_id"

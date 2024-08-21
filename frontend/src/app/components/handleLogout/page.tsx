@@ -16,6 +16,7 @@ const HandleLogout = ({
         setIsAdmin(false);
         localStorage.removeItem('username');
         alert('logout successful');
+        window.location.reload();
         // console.log('Logout successful');
       } else {
         console.error('Error during logout:', response.statusText);
@@ -28,7 +29,7 @@ const HandleLogout = ({
   return (
     <button
       type="button"
-      className="bg-red-500 text-white px-4 py-2 rounded mt-2"
+      className="bg-red-500 text-white px-4 py-2 rounded mr-2 ml-10"
       onClick={handleLogout}
     >
       Logout

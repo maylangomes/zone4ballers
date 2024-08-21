@@ -130,23 +130,7 @@ export default function Home() {
           </div>
         )}
       </div> */}
-      <div className="mt-8">
-        <button
-          type="button"
-          className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
-          onClick={() => router.push('/pages/signup')}
-        >
-          Sign up
-        </button>
-        <button
-          type="button"
-          className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
-          onClick={() => router.push('/pages/login')}
-        >
-          Login
-        </button>
-        <HandleLogout setIsAdmin={setIsAdmin} />
-      </div>
+      
     </div>
     </div>
   );

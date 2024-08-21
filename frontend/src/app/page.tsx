@@ -44,64 +44,65 @@ export default function Home() {
     setProducts((prevProducts) => {
       console.log(prevProducts);
       let filter = prevProducts.filter((product) => product.id !== id);
-      console.log("filter :", filter);
+      console.log('filter :', filter);
       return filter;
     });
   };
 
   return (
-    <div><Navbar/>
-    <div className="container mx-auto p-4">
-      <StorageUser />
-      <FetchAdmin setIsAdmin={setIsAdmin} />
-      <FetchCategories
-        setCategoryFilter={setCategoryFilter}
-        setCategories={setCategories}
-        categories={categories}
-      />
-      <FetchProducts
-        setProducts={setProducts}
-        setLoadingProducts={setLoadingProducts}
-        filter={memoizedFilter}
-      />
-      {loadingProducts ? (
-        <p>Loading products...</p>
-      ) : (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Products:</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {products.map((product) =>
-              isAdmin ? (
-                <AdminCard
-                  key={product.id}
-                  product={product}
-                  onUpdate={() => {}}
-                  onAddToBasket={handleAddToBasket}
-                  onProductDelete={handleProductDelete}
-                />
-              ) : (
-                <Card
-                  key={product.id}
-                  product={product}
-                  onAddToBasket={handleAddToBasket}
-                />
-              ),
-            )}
-            {isAdmin && <HandleCategory />}
-          </div>
-        </div>
-      )}
+    <div>
+      <Navbar />
       <div className="container mx-auto p-4">
-        {isAdmin && <AddArticleForm />}
-      </div>
-      <div className="mt-8">
-        <Basket
-          items={basketItems}
-          onRemove={handleRemoveFromBasket}
-          onClear={handleClearBasket}
+        <StorageUser />
+        <FetchAdmin setIsAdmin={setIsAdmin} />
+        <FetchCategories
+          setCategoryFilter={setCategoryFilter}
+          setCategories={setCategories}
+          categories={categories}
         />
-      </div>
-      {/* <div className="mt-8">
+        <FetchProducts
+          setProducts={setProducts}
+          setLoadingProducts={setLoadingProducts}
+          filter={memoizedFilter}
+        />
+        {loadingProducts ? (
+          <p>Loading products...</p>
+        ) : (
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Products:</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {products.map((product) =>
+                isAdmin ? (
+                  <AdminCard
+                    key={product.id}
+                    product={product}
+                    onUpdate={() => {}}
+                    onAddToBasket={handleAddToBasket}
+                    onProductDelete={handleProductDelete}
+                  />
+                ) : (
+                  <Card
+                    key={product.id}
+                    product={product}
+                    onAddToBasket={handleAddToBasket}
+                  />
+                ),
+              )}
+              {isAdmin && <HandleCategory />}
+            </div>
+          </div>
+        )}
+        <div className="container mx-auto p-4">
+          {isAdmin && <AddArticleForm />}
+        </div>
+        <div className="mt-8">
+          <Basket
+            items={basketItems}
+            onRemove={handleRemoveFromBasket}
+            onClear={handleClearBasket}
+          />
+        </div>
+        {/* <div className="mt-8">
         <FetchUsers setUsers={setUsers} setLoadingUsers={setLoadingUsers} />
         {loadingUsers ? (
           <p>Loading users...</p>
@@ -130,8 +131,7 @@ export default function Home() {
           </div>
         )}
       </div> */}
-      
-    </div>
+      </div>
     </div>
   );
 }

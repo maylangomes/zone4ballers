@@ -420,12 +420,12 @@ export default function AdminCard({
         <div>
           <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
           <p className="text-lg font-bold mb-4">{product.description}</p>
-          <p className="text-lg font-bold mb-4">${product.price}</p>
+          <p className="text-lg font-bold mb-4">Without color : ${product.price}</p>
           <p className="text-lg font-bold mb-4">Color : {colorName}</p>
           <p className="text-lg font-bold mb-4">Category : {categoryName}</p>
           {adjustedPrice !== null && (
             <p className="text-lg font-bold mb-4">
-              Adjusted Price: ${adjustedPrice.toFixed(2)}
+              Final Price : ${adjustedPrice.toFixed(2)}
             </p>
           )}
           {!product.is_available ? (
@@ -445,7 +445,6 @@ export default function AdminCard({
           )}
           {productImages.length > 0 && (
           <div className="mb-4">
-            <h4 className="text-lg font-semibold mb-2">Product Images:</h4>
             {productImages.map((imageUrl, index) => (
               <img
                 key={index}

@@ -15,6 +15,7 @@ import { ProductWithCategory } from './types/type';
 import useBasket from './components/handleBasket/page';
 import FetchAdmin from './components/fetchAdmin/page';
 import AddArticleForm from './components/addArticleForm/page';
+import Navbar from '../app/components/navbar/NavBar';
 
 export default function Home() {
   const [users, setUsers] = useState<any[]>([]);
@@ -49,6 +50,7 @@ export default function Home() {
   };
 
   return (
+    <div><Navbar/>
     <div className="container mx-auto p-4">
       <StorageUser />
       <FetchAdmin setIsAdmin={setIsAdmin} />
@@ -145,6 +147,7 @@ export default function Home() {
         </button>
         <HandleLogout setIsAdmin={setIsAdmin} />
       </div>
+    </div>
     </div>
   );
 }

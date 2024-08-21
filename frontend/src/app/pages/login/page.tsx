@@ -4,12 +4,15 @@ import { useState } from 'react';
 import LoginForm from '@/app/components/fetchLogin/page';
 import StorageUser from '@/app/components/storageUser/page';
 import { useRouter } from 'next/navigation';
+import Navbar from '../../components/navbar/NavBar';
+
 
 const UserProfile = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   return (
+    <div><Navbar/>
     <div className="container mx-auto p-4 max-w-md bg-white shadow-md rounded-lg">
       <h2 className="text-3xl font-bold mb-4 text-center">Login</h2>
       <StorageUser />
@@ -31,6 +34,7 @@ const UserProfile = () => {
           Signup
         </button>
       </div>
+    </div>
     </div>
   );
 };

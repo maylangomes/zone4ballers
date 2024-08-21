@@ -1,8 +1,9 @@
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './NavBar.module.css';
 
 const NavBar: React.FC = () => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
@@ -13,6 +14,7 @@ const NavBar: React.FC = () => {
     'Another Article',
     'More Articles',
   ];
+
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -37,19 +39,31 @@ const NavBar: React.FC = () => {
     <nav className={styles.nav}>
       <ul className={styles.navList}>
         <li className={styles.navItem}>
-          <Link href="/" legacyBehavior>
-            <a className={styles.navLink}>Home</a>
-          </Link>
+        <button
+          type="button"
+          className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
+          onClick={() => router.push('/')}
+        >
+          Home
+        </button>
         </li>
         <li className={styles.navItem}>
-          <Link href="/login" legacyBehavior>
-            <a className={styles.navLink}>Login</a>
-          </Link>
+        <button
+          type="button"
+          className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
+          onClick={() => router.push('/pages/login')}
+        >
+          Login
+        </button>
         </li>
         <li className={styles.navItem}>
-          <Link href="/signup" legacyBehavior>
-            <a className={styles.navLink}>Signup</a>
-          </Link>
+        <button
+          type="button"
+          className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
+          onClick={() => router.push('/pages/signup')}
+        >
+            Signup
+          </button>
         </li>
         <li className={styles.navItem}>
           <form onSubmit={handleSearchSubmit} className={styles.searchForm}>

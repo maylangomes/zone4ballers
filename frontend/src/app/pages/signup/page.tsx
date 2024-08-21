@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import CreateAccountForm from '@/app/components/fetchSignup/page';
+import Navbar from '../../components/navbar/NavBar';
 
 export default function AddUser() {
   const [message, setMessage] = useState<string | null>(null);
@@ -17,6 +18,7 @@ export default function AddUser() {
   };
 
   return (
+    <div><Navbar/>
     <div className="container mx-auto p-4 max-w-md bg-white shadow-md rounded-lg">
       <h2 className="text-3xl font-bold mb-4 text-center">Signup</h2>
       <CreateAccountForm onSuccess={handleSuccess} onError={handleError} />
@@ -37,6 +39,7 @@ export default function AddUser() {
           Login
         </button>
       </div>
+    </div>
     </div>
   );
 }

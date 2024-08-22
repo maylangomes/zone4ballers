@@ -13,7 +13,6 @@ export default function Card({ product, onAddToBasket }: CardProps) {
   const [colorName, setColorName] = useState<string | null>(null);
   const [productImages, setProductImages] = useState<string[]>([]);
 
-
   useEffect(() => {
     const fetchCategory = async () => {
       try {
@@ -81,11 +80,11 @@ export default function Card({ product, onAddToBasket }: CardProps) {
           },
           body: JSON.stringify({ productId: product.id }),
         });
-  
+
         if (!response.ok) {
           throw new Error('Error fetching product images');
         }
-  
+
         const data = await response.json();
         console.log('Fetched image URLs:', data.imageUrls);
         setProductImages(data.imageUrls);
@@ -93,7 +92,7 @@ export default function Card({ product, onAddToBasket }: CardProps) {
         console.error('Error fetching product images:', error);
       }
     };
-  
+
     fetchProductImages();
   }, [product.id]);
 
@@ -115,7 +114,7 @@ export default function Card({ product, onAddToBasket }: CardProps) {
         ) : (
           <p className="text-teal-500 font-bold mb-4">Available</p>
         )}
-                  {productImages.length > 0 && (
+        {productImages.length > 0 && (
           <div className="mb-4">
             {productImages.map((imageUrl, index) => (
               <img

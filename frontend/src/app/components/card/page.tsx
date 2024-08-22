@@ -44,7 +44,7 @@ export default function Card({ product, onAddToBasket }: CardProps) {
   useEffect(() => {
     const fetchColor = async () => {
       try {
-        // console.log('body color id:', JSON.stringify({ colorId: product.color_id }));
+        // console.log('BODY COLOR ID:', JSON.stringify({ colorId: product.color_id }));
         const response = await fetch('api/controllers/colorIdController', {
           method: 'POST',
           headers: {

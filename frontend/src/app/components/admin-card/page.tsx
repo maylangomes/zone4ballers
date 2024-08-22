@@ -153,7 +153,7 @@ export default function AdminCard({
   useEffect(() => {
     const fetchColor = async () => {
       try {
-        // console.log('body color id:', JSON.stringify({ colorId: product.color_id }));
+        // console.log('BODY COLOR ID:', product.color_id );
         const response = await fetch('/api/controllers/colorIdController', {
           method: 'POST',
           headers: {

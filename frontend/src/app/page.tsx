@@ -38,9 +38,9 @@ export default function Home() {
 
   const handleProductDelete = (id: number) => {
     setProducts((prevProducts) => {
-      console.log(prevProducts);
+      // console.log(prevProducts);
       let filter = prevProducts.filter((product) => product.id !== id);
-      console.log('filter :', filter);
+      // console.log('filter :', filter);
       return filter;
     });
   };

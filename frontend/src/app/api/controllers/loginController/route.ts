@@ -15,7 +15,11 @@ export async function POST(request: NextRequest) {
     }
 
     const users = await getAllUsers();
+    
     const user = users.find((item) => item.name === username);
+    console.log("USEEEEER ID : ", user.id);
+    const userId = user.id;
+    
 
     if (user) {
       const isPasswordValid = bcrypt.compareSync(password, user.password);
@@ -23,7 +27,7 @@ export async function POST(request: NextRequest) {
         const isAdmin = user.admin ? 'true' : 'false';
 
         const response = NextResponse.json(
-          { message: 'Welcome!', isAdmin },
+          { message: 'Welcome!', isAdmin, userId },
           { status: 200 },
         );
 
@@ -32,7 +36,8 @@ export async function POST(request: NextRequest) {
           path: '/',
           maxAge: 60 * 60 * 24,
         });
-
+        console.log("RESPOOOONSE: ", response);
+        
         return response;
       } else {
         return NextResponse.json(

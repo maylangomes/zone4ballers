@@ -4,7 +4,7 @@ import { supabase } from '../../../../../utils/supabase/client';
 export async function POST(request: NextRequest) {
   try {
     const { id } = await request.json();
-    console.log("ID HEEEEEEEEEEERE : ", id);
+    // console.log("ID HEEEEEEEEEEERE : ", id);
 
     const { data: image, error: imageError } = await supabase
     .from('image')
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     .eq('product_id', id);
 
     if (imageError) {
-      console.log("ERROR IMAGE HEEEEEEERE", imageError);
+      // console.log("ERROR IMAGE HEEEEEEERE", imageError);
       throw new Error('error deleting image');
     }
     
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       .eq('id', id);
 
     if (error) {
-      console.log("ERROR HEEEEEEERE", error);
+      // console.log("ERROR HEEEEEEERE", error);
       throw new Error('error deleting product');
     }
 

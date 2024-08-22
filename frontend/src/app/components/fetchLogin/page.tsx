@@ -35,7 +35,9 @@ const LoginForm = ({ setLoading }: LoginFormProps) => {
         alert(result.message);
         return;
       }
-
+      console.log("RESULT USER ID : ", result.userId);
+      
+      localStorage.setItem('userId', result.userId);
       localStorage.setItem('username', username);
       document.cookie = `admin=${result.isAdmin}; path=/;`;
       alert('Login successful!');

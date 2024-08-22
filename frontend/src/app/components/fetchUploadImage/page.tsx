@@ -1,4 +1,4 @@
-async function uploadProductImage(productId, selectedFile) {
+async function uploadProductImage(productId: number, selectedFile: any) {
   try {
     const response = await fetch('/api/controllers/uploadImageController', {
       method: 'POST',
@@ -6,8 +6,8 @@ async function uploadProductImage(productId, selectedFile) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        productId,  // ID du produit auquel l'image est associée
-        file: selectedFile,  // Fichier image sélectionné
+        productId,
+        file: selectedFile,
       }),
     });
 
@@ -18,7 +18,7 @@ async function uploadProductImage(productId, selectedFile) {
     }
 
     const data = await response.json();
-    console.log('Image uploaded successfully:', data.imageUrl);
+    // console.log('Image uploaded successfully:', data.imageUrl);
     alert('Image uploaded successfully!');
   } catch (error) {
     console.error('Error uploading image:', error);

@@ -111,7 +111,7 @@ export default function Card({ product, onAddToBasket }: CardProps) {
         <p className="text-lg font-bold mb-4">Color : {colorName}</p>
         <p className="text-lg font-bold mb-4">Category: {categoryName}</p>
         {!product.is_available ? (
-          <p className="text-teal-500 font-bold mb-4">Unavailable</p>
+          <p className="text-red-500 font-bold mb-4">Unavailable</p>
         ) : (
           <p className="text-teal-500 font-bold mb-4">Available</p>
         )}

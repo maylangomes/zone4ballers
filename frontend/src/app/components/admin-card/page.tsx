@@ -141,7 +141,6 @@ export default function AdminCard({
         }
   
         const data = await response.json();
-        console.log('Fetched image URLs:', data.imageUrls);
         setProductImages(data.imageUrls);
       } catch (error) {
         console.error('Error fetching product images:', error);
@@ -429,7 +428,7 @@ export default function AdminCard({
             </p>
           )}
           {!product.is_available ? (
-            <p className="text-teal-500 font-bold mb-4">Unavailable</p>
+            <p className="text-red-500 font-bold mb-4">Unavailable</p>
           ) : (
             <p className="text-teal-500 font-bold mb-4">Available</p>
           )}

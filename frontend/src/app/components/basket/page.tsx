@@ -14,7 +14,10 @@ interface BasketProps {
 }
 
 const Basket: React.FC<BasketProps> = ({ items, onRemove, onClear }) => {
-  const totalAmount = items.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalAmount = items.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
 
   return (
     <div>
@@ -37,7 +40,9 @@ const Basket: React.FC<BasketProps> = ({ items, onRemove, onClear }) => {
             </div>
           ))}
           <div className="mt-4">
-            <h3 className="text-lg font-semibold">Total: ${totalAmount.toFixed(2)}</h3>
+            <h3 className="text-lg font-semibold">
+              Total: ${totalAmount.toFixed(2)}
+            </h3>
             <button
               onClick={onClear}
               className="bg-teal-500 text-white px-4 py-2 rounded mt-4"

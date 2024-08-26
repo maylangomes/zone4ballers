@@ -10,7 +10,7 @@ const CreateAccountForm = ({ onSuccess, onError }: CreateAccountFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [profileImage, setProfileImage] = useState<File | null>(null);
-  const [address, setAddress] = useState('');
+  const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [zip, setZip] = useState('');
@@ -32,12 +32,11 @@ const CreateAccountForm = ({ onSuccess, onError }: CreateAccountFormProps) => {
     formData.append('email', email);
     formData.append('password', password);
     formData.append('profileImage', profileImage);
-    formData.append('address', address);
+    formData.append('street', street);
     formData.append('city', city);
     formData.append('state', state);
     formData.append('zip', zip);
     formData.append('country', country);
-
 
     try {
       const response = await fetch('/api/controllers/signupController', {
@@ -52,7 +51,7 @@ const CreateAccountForm = ({ onSuccess, onError }: CreateAccountFormProps) => {
         setEmail('');
         setPassword('');
         setProfileImage(null);
-        setAddress('');
+        setStreet('');
         setCity('');
         setState('');
         setZip('');
@@ -95,9 +94,9 @@ const CreateAccountForm = ({ onSuccess, onError }: CreateAccountFormProps) => {
       />
       <input
         type="text"
-        placeholder="Address"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
+        placeholder="street"
+        value={street}
+        onChange={(e) => setStreet(e.target.value)}
       />
       <input
         type="text"

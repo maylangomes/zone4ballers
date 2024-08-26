@@ -2,7 +2,7 @@ import { supabase } from '../../../../../utils/supabase/client';
 import bcrypt from 'bcryptjs';
 
 export const createUser = async (
-name: string, email: string, password: string, profileImage: File, address: string, city: string, state: string, zip: string, country: string,
+name: string, email: string, password: string, profileImage: File, street: string, city: string, state: string, zip: string, country: string,
 ) => {
   const date = new Date();
   const timestamp = date.toISOString().replace(/[:.-]/g, '');
@@ -28,7 +28,7 @@ name: string, email: string, password: string, profileImage: File, address: stri
   const { data, error } = await supabase
     .from('user')
     .insert([
-      { name, email, password: hashedPassword, profile_image_url: imageUrl, address, city, state, zip, country },
+      { name, email, password: hashedPassword, profile_image_url: imageUrl, street, city, state, zip, country },
     ]);
 
   if (error) {

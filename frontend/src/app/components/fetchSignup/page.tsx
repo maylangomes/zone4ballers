@@ -13,7 +13,7 @@ const CreateAccountForm = ({ onSuccess, onError }: CreateAccountFormProps) => {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
-  const [postalCode, setPostalCode] = useState('');
+  const [zip, setZip] = useState('');
   const [country, setCountry] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +35,7 @@ const CreateAccountForm = ({ onSuccess, onError }: CreateAccountFormProps) => {
     formData.append('address', address);
     formData.append('city', city);
     formData.append('state', state);
-    formData.append('postalCode', postalCode);
+    formData.append('zip', zip);
     formData.append('country', country);
 
 
@@ -55,7 +55,7 @@ const CreateAccountForm = ({ onSuccess, onError }: CreateAccountFormProps) => {
         setAddress('');
         setCity('');
         setState('');
-        setPostalCode('');
+        setZip('');
         setCountry('');
         onSuccess();
       } else {
@@ -113,9 +113,9 @@ const CreateAccountForm = ({ onSuccess, onError }: CreateAccountFormProps) => {
       />
       <input
         type="text"
-        placeholder="postal_code"
-        value={postalCode}
-        onChange={(e) => setPostalCode(e.target.value)}
+        placeholder="zip"
+        value={zip}
+        onChange={(e) => setZip(e.target.value)}
       />
       <input
         type="text"

@@ -6,7 +6,11 @@ interface FetchCategoriesProps {
   categories: { id: string; name: string }[];
 }
 
-const FetchCategories: FC<FetchCategoriesProps> = ({ setCategoryFilter, setCategories, categories }) => {
+const FetchCategories: FC<FetchCategoriesProps> = ({
+  setCategoryFilter,
+  setCategories,
+  categories,
+}) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {

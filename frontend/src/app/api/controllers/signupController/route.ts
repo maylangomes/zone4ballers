@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const address = formData.get('address') as string;
     const city = formData.get('city') as string;
     const state = formData.get('state') as string;
-    const postalCode = formData.get('postalCode') as string;
+    const zip = formData.get('zip') as string;
     const country = formData.get('country') as string;
 
 
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await createUser(name, email, password, profileImage, address, city, state, postalCode, country);
+    await createUser(name, email, password, profileImage, address, city, state, zip, country);
 
     return NextResponse.json(
       { message: 'Congrats! Your account has been created' },

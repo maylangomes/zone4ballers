@@ -6,8 +6,7 @@ const StorageUser = () => {
     const userId = localStorage.getItem('userId');
     if (user) {
       console.log('User connected:', user);
-      console.log('Id user :', userId );
-      
+      console.log('Id user :', userId);
     } else {
       console.log('No user connected');
     }

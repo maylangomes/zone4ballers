@@ -1,12 +1,8 @@
 'use client';
 import { FormEvent, useState } from 'react';
 
-interface CreateAddressFormProps {
-  onSuccess: () => void;
-  onError: (message: string) => void;
-}
 
-const CreateAddressForm = ({ onSuccess, onError }: CreateAddressFormProps) => {
+const CreateAddressForm = () => {
   const [name, setName] = useState('');
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
@@ -15,6 +11,7 @@ const CreateAddressForm = ({ onSuccess, onError }: CreateAddressFormProps) => {
   const [country, setCountry] = useState('');
   const [loading, setLoading] = useState(false);
   const [showResponse, setShowResponse] = useState<any>(null);
+  const [showError, setShowError] = useState<any>(null);
 
   const createAddress = async (e: FormEvent) => {
     e.preventDefault();
@@ -47,9 +44,10 @@ const CreateAddressForm = ({ onSuccess, onError }: CreateAddressFormProps) => {
 
         setShowResponse(data);
       } else {
-        onError(data.error || 'error response ok');
+        console.log("error response :", data.error);
       }
     } catch (error: any) {
+      setShowError(error.message);
       console.error(error);
     } finally {
       setLoading(false);
@@ -100,6 +98,7 @@ const CreateAddressForm = ({ onSuccess, onError }: CreateAddressFormProps) => {
         </button>
       </form>
       {showResponse && <pre>{JSON.stringify(showResponse, null, 2)}</pre>}
+      {showError}
     </div>
   );
 };

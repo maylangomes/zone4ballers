@@ -14,6 +14,7 @@ const CreateAddressForm = ({ onSuccess, onError }: CreateAddressFormProps) => {
   const [zip, setZip] = useState('');
   const [country, setCountry] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showResponse, setShowResponse] = useState<any>(null);
 
   const createAddress = async (e: FormEvent) => {
     e.preventDefault();
@@ -27,7 +28,6 @@ const CreateAddressForm = ({ onSuccess, onError }: CreateAddressFormProps) => {
     formData.append('state', state);
     formData.append('zip', zip);
     formData.append('country', country);
-
 
     try {
       const response = await fetch('/api/controllers/shippo', {
@@ -44,7 +44,8 @@ const CreateAddressForm = ({ onSuccess, onError }: CreateAddressFormProps) => {
         setState('');
         setZip('');
         setCountry('');
-        onSuccess();
+
+        setShowResponse(data);
       } else {
         onError(data.error || 'error response ok');
       }
@@ -56,47 +57,50 @@ const CreateAddressForm = ({ onSuccess, onError }: CreateAddressFormProps) => {
   };
 
   return (
-    <form onSubmit={createAddress}>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="street"
-        value={street}
-        onChange={(e) => setStreet(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="City"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="State"
-        value={state}
-        onChange={(e) => setState(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="zip"
-        value={zip}
-        onChange={(e) => setZip(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Country"
-        value={country}
-        onChange={(e) => setCountry(e.target.value)}
-      />
-      <button type="submit" disabled={loading}>
-        {loading ? 'Signing up...' : 'Sign up'}
-      </button>
-    </form>
+    <div>
+      <form onSubmit={createAddress}>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="street"
+          value={street}
+          onChange={(e) => setStreet(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="City"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="State"
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="zip"
+          value={zip}
+          onChange={(e) => setZip(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Country"
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? 'Signing up...' : 'Sign up'}
+        </button>
+      </form>
+      {showResponse && <pre>{JSON.stringify(showResponse, null, 2)}</pre>}
+    </div>
   );
 };
 

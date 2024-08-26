@@ -1,7 +1,6 @@
 'use client';
 import { FormEvent, useState } from 'react';
 
-
 const CreateAddressForm = () => {
   const [name, setName] = useState('');
   const [street, setStreet] = useState('');
@@ -9,6 +8,8 @@ const CreateAddressForm = () => {
   const [state, setState] = useState('');
   const [zip, setZip] = useState('');
   const [country, setCountry] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [showResponse, setShowResponse] = useState<any>(null);
   const [showError, setShowError] = useState<any>(null);
@@ -25,6 +26,8 @@ const CreateAddressForm = () => {
     formData.append('state', state);
     formData.append('zip', zip);
     formData.append('country', country);
+    formData.append('phone', phone);
+    formData.append('email', email);
 
     try {
       const response = await fetch('/api/controllers/shippo', {
@@ -41,10 +44,12 @@ const CreateAddressForm = () => {
         setState('');
         setZip('');
         setCountry('');
+        setPhone('');
+        setEmail('');
 
         setShowResponse(data);
       } else {
-        console.log("error response :", data.error);
+        console.log('error response :', data.error);
       }
     } catch (error: any) {
       setShowError(error.message);
@@ -92,6 +97,18 @@ const CreateAddressForm = () => {
           placeholder="Country"
           value={country}
           onChange={(e) => setCountry(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <button type="submit" disabled={loading}>
           {loading ? 'Signing up...' : 'Sign up'}

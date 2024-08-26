@@ -14,6 +14,8 @@ export async function POST(request: NextRequest) {
   const state = formData.get('state') as string;
   const zip = formData.get('zip') as string;
   const country = formData.get('country') as string;
+  const phone = formData.get('phone') as string || null;
+  const email = formData.get('email') as string;
   console.log('NAME : ', name);
 
   try {
@@ -24,13 +26,15 @@ export async function POST(request: NextRequest) {
       state: 'CA',
       zip: '94117',
       country: 'US',
-      phone: '+1 555 341 9393',
+      phone: phone,
       email: 'shippotle@shippo.com',
     });
 
+    
+
     const { data, error } = await supabase
       .from('delivery_address')
-      .insert([{ name: name }]);
+      .insert([{ name, phone, email }]);
 
     console.log('Adresse créée avec succès :', addressFrom);
     console.log("DATA : ", data);

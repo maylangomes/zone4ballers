@@ -24,7 +24,7 @@ export default function ProductPage() {
 
   return (
     <div>
-    <NavBar/>
+      <NavBar/>
     <div className="container mx-auto p-4">
       <FetchIdProduct setProduct={setProduct} setLoading={setLoading} />
 

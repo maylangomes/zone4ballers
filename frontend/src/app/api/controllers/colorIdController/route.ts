@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     const { colorId } = await request.json();
 
-    console.log('colorID :', colorId);
+    // console.log('colorID :', colorId);
 
     const { data: colorPrice, error } = await supabase
       .from('color')
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
         { status: 500 },
       );
     }
-    console.log('DATA POURCENTAGE', colorPrice);
+    // console.log('DATA POURCENTAGE', colorPrice);
 
     const { data: products, error: productError } = await supabase
       .from('product')
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       return { productId: product.id, adjustedPrice };
     });
 
-    console.log('Adjusted Prices:', adjustedPrices);
+    // console.log('Adjusted Prices:', adjustedPrices);
 
     return NextResponse.json({ colorPrice, adjustedPrices }, { status: 200 });
   } catch (error) {

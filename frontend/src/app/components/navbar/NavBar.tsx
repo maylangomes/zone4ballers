@@ -34,7 +34,7 @@ const NavBar: React.FC = () => {
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Search query:', searchQuery);
+    // console.log('Search query:', searchQuery);
   };
 
   return (

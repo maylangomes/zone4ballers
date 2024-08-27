@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 interface BasketItem {
   id: number;
@@ -14,7 +14,28 @@ interface BasketProps {
 }
 
 const Basket: React.FC<BasketProps> = ({ items, onRemove, onClear }) => {
-  const totalAmount = items.reduce((total, item) => total + item.price * item.quantity, 0);
+  // console.log('items : ', items);
+  useEffect(() => {
+    const itemList = JSON.parse(localStorage.getItem('basket'));
+    const fetchBasket = async () => {
+      try {
+        const response = await fetch('/api/controllers/basketController', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ itemList }),
+        });
+        console.log('ITEEEEMS', itemList);
+      } catch (error) {
+        console.error('Error fetch basket', error);
+      }
+    };
+    fetchBasket();
+  }, []);
+
+  const totalAmount = items.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
 
   return (
     <div>
@@ -37,7 +58,9 @@ const Basket: React.FC<BasketProps> = ({ items, onRemove, onClear }) => {
             </div>
           ))}
           <div className="mt-4">
-            <h3 className="text-lg font-semibold">Total: ${totalAmount.toFixed(2)}</h3>
+            <h3 className="text-lg font-semibold">
+              Total: ${totalAmount.toFixed(2)}
+            </h3>
             <button
               onClick={onClear}
               className="bg-teal-500 text-white px-4 py-2 rounded mt-4"

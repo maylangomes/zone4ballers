@@ -1,18 +1,15 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useMemo } from 'react';
 import AdminCard from '../app/components/admin-card/page';
 import Card from '../app/components/card/page';
 import HandleCategory from '../app/components/handleCategory/page';
 import FetchProducts from './components/fetchProduct/page';
-import FetchUsers from './components/fetchUsers/page';
 import StorageUser from './components/storageUser/page';
-import HandleLogout from './components/handleLogout/page';
 import FetchCategories from './components/fetchCategories/page';
 import Basket from './components/basket/page';
 import { ProductWithCategory } from './types/type';
-import useBasket from './components/handleBasket/page';
+import handleBasket from './components/handleBasket/page';
 import FetchAdmin from './components/fetchAdmin/page';
 import AddArticleForm from './components/addArticleForm/page';
 import Navbar from '../app/components/navbar/NavBar';
@@ -27,7 +24,6 @@ export default function Home() {
   const [categories, setCategories] = useState<{ id: string; name: string }[]>(
     [],
   );
-  const router = useRouter();
   const memoizedFilter = useMemo(
     () => ({ categoryId: categoryFilter }),
     [categoryFilter],
@@ -38,13 +34,13 @@ export default function Home() {
     handleAddToBasket,
     handleRemoveFromBasket,
     handleClearBasket,
-  } = useBasket();
+  } = handleBasket();
 
   const handleProductDelete = (id: number) => {
     setProducts((prevProducts) => {
-      console.log(prevProducts);
+      // console.log(prevProducts);
       let filter = prevProducts.filter((product) => product.id !== id);
-      console.log('filter :', filter);
+      // console.log('filter :', filter);
       return filter;
     });
   };

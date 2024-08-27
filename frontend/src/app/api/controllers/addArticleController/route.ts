@@ -18,7 +18,7 @@ export async function POST(request: Request) {
           color_id: body.color_id,
           size: body.size,
           rating: body.rating,
-          country: body.rating,
+          country: body.country,
           is_available: true,
           is_new: false,
           is_promoted: false,

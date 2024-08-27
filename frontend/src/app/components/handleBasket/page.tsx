@@ -8,7 +8,7 @@ interface BasketItem {
   quantity: number;
 }
 
-const useBasket = () => {
+const handleBasket = () => {
   const [basketItems, setBasketItems] = useState<BasketItem[]>([]);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const useBasket = () => {
       // console.log('Loaded basket from localStorage:', JSON.parse(savedBasket));
       setBasketItems(JSON.parse(savedBasket));
     } else {
-      // console.log('No basket found in localStorage');
+      console.log('No basket found in localStorage');
     }
   }, []);
 
@@ -60,4 +60,4 @@ const useBasket = () => {
   };
 };
 
-export default useBasket;
+export default handleBasket;

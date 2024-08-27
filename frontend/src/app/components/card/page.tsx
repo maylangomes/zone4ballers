@@ -11,6 +11,7 @@ export default function Card({ product, onAddToBasket }: CardProps) {
   const router = useRouter();
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [colorName, setColorName] = useState<string | null>(null);
+  const [productImages, setProductImages] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -43,7 +44,7 @@ export default function Card({ product, onAddToBasket }: CardProps) {
   useEffect(() => {
     const fetchColor = async () => {
       try {
-        // console.log('body color id:', JSON.stringify({ colorId: product.color_id }));
+        // console.log('BODY COLOR ID:', JSON.stringify({ colorId: product.color_id }));
         const response = await fetch('api/controllers/colorIdController', {
           method: 'POST',
           headers: {
@@ -60,7 +61,7 @@ export default function Card({ product, onAddToBasket }: CardProps) {
 
         // console.log('Data color : ', data);
 
-        setColorName(data.color ? data.color.name : 'No color');
+        setColorName(data.colorPrice.name ? data.colorPrice.name : 'No color');
       } catch (error) {
         console.error('Error try fetch color');
       }
@@ -68,6 +69,32 @@ export default function Card({ product, onAddToBasket }: CardProps) {
 
     fetchColor();
   }, [product.color_id]);
+
+  useEffect(() => {
+    const fetchProductImages = async () => {
+      try {
+        const response = await fetch('/api/controllers/showImageController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productId: product.id }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching product images');
+        }
+
+        const data = await response.json();
+        console.log('Fetched image URLs:', data.imageUrls);
+        setProductImages(data.imageUrls);
+      } catch (error) {
+        console.error('Error fetching product images:', error);
+      }
+    };
+
+    fetchProductImages();
+  }, [product.id]);
 
   const handleClick = () => {
     localStorage.setItem('selectedProductId', product.id.toString());
@@ -83,9 +110,26 @@ export default function Card({ product, onAddToBasket }: CardProps) {
         <p className="text-lg font-bold mb-4">Color : {colorName}</p>
         <p className="text-lg font-bold mb-4">Category: {categoryName}</p>
         {!product.is_available ? (
-          <p className="text-teal-500 font-bold mb-4">Unavailable</p>
+          <p className="text-red-500 font-bold mb-4">Unavailable</p>
         ) : (
           <p className="text-teal-500 font-bold mb-4">Available</p>
+        )}
+        {productImages.length > 0 && (
+          <div className="mb-4">
+            {productImages.map((imageUrl, index) => (
+              <img
+                key={index}
+                src={imageUrl}
+                alt={`Product Image ${index + 1}`}
+                style={{
+                  width: '100px',
+                  height: '100px',
+                  borderRadius: '8px',
+                  marginRight: '8px',
+                }}
+              />
+            ))}
+          </div>
         )}
         <button
           className="bg-teal-500 text-white px-4 py-2 rounded"

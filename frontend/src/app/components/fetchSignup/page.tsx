@@ -113,7 +113,7 @@ const CreateAccountForm = ({ onSuccess, onError }: CreateAccountFormProps) => {
       />
       <input
         type="text"
-        placeholder="postal_code"
+        placeholder="postal code"
         value={postalCode}
         onChange={(e) => setPostalCode(e.target.value)}
       />

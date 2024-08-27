@@ -1,22 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './NavBar.module.css';
 import HandleLogout from '../handleLogout/page';
+import { supabase } from '../../../../utils/supabase/client';
+
+interface Article {
+  id: string;
+  name: string;
+}
 
 const NavBar: React.FC = () => {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]); 
   const [isAdmin, setIsAdmin] = useState(false);
 
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const { data, error } = await supabase
+        .from('product')
+        .select('id, name'); 
 
-  const articles = [
-    'Article 1',
-    'Article 2',
-    'Article 3',
-    'Another Article',
-    'More Articles',
-  ];
+      if (error) {
+        console.error('Error fetching articles:', error);
+      } else {
+        setArticles(data || []); 
+      }
+    };
+
+    fetchArticles();
+  }, []); 
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -24,7 +38,7 @@ const NavBar: React.FC = () => {
 
     if (query.length > 1) {
       const filteredSuggestions = articles.filter((article) =>
-        article.toLowerCase().includes(query.toLowerCase()),
+        article.name.toLowerCase().includes(query.toLowerCase()),
       );
       setSuggestions(filteredSuggestions);
     } else {
@@ -34,7 +48,12 @@ const NavBar: React.FC = () => {
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // console.log('Search query:', searchQuery);
+   
+  };
+
+  const handleSuggestionClick = (id: string) => {
+    router.push(`/pages/detailsProducts/${id}`);
+    console.log(`/pages/detailsProducts/${id}`);
   };
 
   return (
@@ -82,9 +101,13 @@ const NavBar: React.FC = () => {
             <HandleLogout setIsAdmin={setIsAdmin} />
             {suggestions.length > 0 && (
               <ul className={styles.suggestionsList}>
-                {suggestions.map((suggestion, index) => (
-                  <li key={index} className={styles.suggestionItem}>
-                    {suggestion}
+                {suggestions.map((suggestion) => (
+                  <li
+                    key={suggestion.id}
+                    className={styles.suggestionItem}
+                    onClick={() => handleSuggestionClick(suggestion.id)}
+                  >
+                    {suggestion.name}
                   </li>
                 ))}
               </ul>

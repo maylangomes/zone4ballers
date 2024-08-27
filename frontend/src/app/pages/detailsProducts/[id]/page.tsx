@@ -5,6 +5,7 @@ import { Product } from '@/app/types/type';
 import FetchIdProduct from '@/app/components/fetchIdProduct/page';
 import handleBasket from '@/app/components/handleBasket/page';
 import Basket from '@/app/components/basket/page';
+import NavBar from '@/app/components/navbar/NavBar';
 
 interface ProductWithCategory extends Product {
   categoryName: string | null;
@@ -22,6 +23,8 @@ export default function ProductPage() {
   } = handleBasket();
 
   return (
+    <div>
+    <NavBar/>
     <div className="container mx-auto p-4">
       <FetchIdProduct setProduct={setProduct} setLoading={setLoading} />
 
@@ -54,6 +57,7 @@ export default function ProductPage() {
           onClear={handleClearBasket}
         />
       </div>
+    </div>
     </div>
   );
 }

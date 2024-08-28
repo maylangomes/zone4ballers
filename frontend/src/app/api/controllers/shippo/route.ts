@@ -16,7 +16,6 @@ export async function POST(request: NextRequest) {
   const country = formData.get('country') as string;
   const phone = formData.get('phone') as string || null;
   const email = formData.get('email') as string;
-  console.log('NAME : ', name);
 
   try {
     const addressFrom = await shippo.addresses.create({

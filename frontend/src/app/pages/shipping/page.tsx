@@ -1,4 +1,5 @@
 'use client';
+import StorageUser from '@/app/components/storageUser/page';
 import { FormEvent, useState } from 'react';
 
 const ShippingPage = () => {
@@ -27,16 +28,28 @@ const ShippingPage = () => {
     setLoading(true);
     setError(null);
 
+    const user = localStorage.getItem('username');
     const formData = new FormData();
     formData.append('addressTo', JSON.stringify(addressTo));
 
     try {
+      const userAddress = await fetch('/api/controllers/getUserAddress', {
+        method: 'POST',
+        body: JSON.stringify({ user }),
+      });
+
+      console.log('USERNAAME', user);
+
+      const userData = await userAddress.json();
+      console.log(userData[0].city);
+      addressTo.city = userData[0].city;
+
       const response = await fetch('/api/controllers/shipping', {
         method: 'POST',
         body: formData,
       });
 
-      const data = await response.json();      
+      const data = await response.json();
 
       if (response.ok) {
         setShippingRates(data);
@@ -52,6 +65,7 @@ const ShippingPage = () => {
 
   return (
     <div>
+      <StorageUser />
       <form onSubmit={fetchShippingRates}>
         <h2>Adresse de destination</h2>
         <input
@@ -127,7 +141,7 @@ const ShippingPage = () => {
           ))}
         </ul>
       )}
-      {error && <p className='text-red-600'>{error}</p>}
+      {error && <p className="text-red-600">{error}</p>}
     </div>
   );
 };

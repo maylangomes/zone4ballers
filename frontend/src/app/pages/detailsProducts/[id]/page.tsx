@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Product } from '@/app/types/type';
 import FetchIdProduct from '@/app/components/fetchIdProduct/page';
 import handleBasket from '@/app/components/handleBasket/page';
@@ -25,39 +25,39 @@ export default function ProductPage() {
   return (
     <div>
       <NavBar/>
-    <div className="container mx-auto p-4">
-      <FetchIdProduct setProduct={setProduct} setLoading={setLoading} />
+      <div className="container mx-auto p-4">
+        <FetchIdProduct setProduct={setProduct} setLoading={setLoading} />
 
-      {loading ? (
-        <p className="text-center">Loading product...</p>
-      ) : !product ? (
-        <p className="text-center">Product not found</p>
-      ) : (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">{product.name}</h2>
-          <p className="text-xl font-bold mb-4">{product.description}</p>
-          <p className="text-lg font-bold mb-4">${product.price}</p>
-          <p className="text-lg font-bold mb-4">{product.details}</p>
-          <p className="text-lg font-bold mb-4">{product.stock} in stock</p>
-          <p className="text-lg font-bold mb-4">
-            Category: {product.categoryName || 'No Category'}
-          </p>
-          <p className="text-lg font-bold mb-4">Size: {product.size}</p>
-          <p className="text-lg font-bold mb-4">Rating: {product.rating}</p>
-          <p className="text-lg font-bold mb-4">Country: {product.country}</p>
-          <button className="bg-teal-500 text-white px-4 py-2 rounded">
-            Buy Now
-          </button>
+        {loading ? (
+          <p className="text-center">Loading product...</p>
+        ) : !product ? (
+          <p className="text-center">Product not found</p>
+        ) : (
+          <div>
+            <h2 className="text-2xl font-bold mb-4">{product.name}</h2>
+            <p className="text-xl font-bold mb-4">{product.description}</p>
+            <p className="text-lg font-bold mb-4">${product.price}</p>
+            <p className="text-lg font-bold mb-4">{product.details}</p>
+            <p className="text-lg font-bold mb-4">{product.stock} in stock</p>
+            <p className="text-lg font-bold mb-4">
+              Category: {product.categoryName || 'No Category'}
+            </p>
+            <p className="text-lg font-bold mb-4">Size: {product.size}</p>
+            <p className="text-lg font-bold mb-4">Rating: {product.rating}</p>
+            <p className="text-lg font-bold mb-4">Country: {product.country}</p>
+            <button className="bg-teal-500 text-white px-4 py-2 rounded">
+              Buy Now
+            </button>
+          </div>
+        )}
+        <div className="mt-8">
+          <Basket
+            items={basketItems}
+            onRemove={handleRemoveFromBasket}
+            onClear={handleClearBasket}
+          />
         </div>
-      )}
-      <div className="mt-8">
-        <Basket
-          items={basketItems}
-          onRemove={handleRemoveFromBasket}
-          onClear={handleClearBasket}
-        />
       </div>
-    </div>
     </div>
   );
 }

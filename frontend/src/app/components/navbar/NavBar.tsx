@@ -14,20 +14,18 @@ const NavBar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Article[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);""
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fonction pour récupérer les articles depuis Supabase
     const fetchArticles = async () => {
       const { data, error } = await supabase
         .from('product')
-        .select('id, name'); // Récupérer à la fois l'ID et le nom de l'article
-
+        .select('id, name'); 
       if (error) {
         console.error('Error fetching articles:', error);
       } else {
-        setArticles(data || []); // Stockez les articles avec leurs ID et noms
+        setArticles(data || []); 
       }
     };
 
@@ -50,23 +48,19 @@ const NavBar: React.FC = () => {
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Optionnel: Gérez la soumission du formulaire de recherche si nécessaire
   };
 
   const handleSuggestionClick = (id: string) => {
-    // D'abord, réinitialiser l'ID sélectionné
-    setSelectedId(null);
-    
-    // Ensuite, mettre à jour l'ID avec celui de l'article cliqué
     setSelectedId(id);
+    localStorage.setItem('selectedProductId', id);
+    router.push(`/pages/detailsProducts/?id=${id}`);
   };
 
-  // useEffect pour rediriger une fois l'ID mis à jour
   useEffect(() => {
     if (selectedId) {
       router.push(`/pages/detailsProducts/${selectedId}`);
     }
-  }, [selectedId, router]); // Déclenchement uniquement lorsque selectedId change
+  }, [selectedId, router]); 
 
   return (
     <nav className={styles.nav}>

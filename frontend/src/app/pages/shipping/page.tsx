@@ -1,6 +1,5 @@
 'use client';
-import StorageUser from '@/app/components/storageUser/page';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 const ShippingPage = () => {
   const [addressTo, setAddressTo] = useState({
@@ -14,36 +13,49 @@ const ShippingPage = () => {
     email: '',
   });
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [shippingRates, setShippingRates] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+  let user = "";
+
+  if (typeof window !== 'undefined') {
+    user = localStorage.getItem('username');
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setAddressTo((prev) => ({ ...prev, [name]: value }));
   };
 
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+          const userAddress = await fetch('/api/controllers/getUserAddress', {
+              method: 'POST',
+              body: JSON.stringify({ user }),
+            });
+      
+            // console.log('USERNAAME', user);
+      
+            const userData = await userAddress.json();
+            //console.log(userData);
+            addressTo.city = userData[0].city;
+            setLoading(false)
+      } catch (error) {
+          console.error('Error catch fetch address', error);
+      }
+    };
+    fetchAddress();
+  }, []);
+
   const fetchShippingRates = async (e: FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
 
-    const user = localStorage.getItem('username');
     const formData = new FormData();
     formData.append('addressTo', JSON.stringify(addressTo));
 
     try {
-      const userAddress = await fetch('/api/controllers/getUserAddress', {
-        method: 'POST',
-        body: JSON.stringify({ user }),
-      });
-
-      console.log('USERNAAME', user);
-
-      const userData = await userAddress.json();
-      console.log(userData[0].city);
-      addressTo.city = userData[0].city;
-
       const response = await fetch('/api/controllers/shipping', {
         method: 'POST',
         body: formData,
@@ -63,9 +75,11 @@ const ShippingPage = () => {
     }
   };
 
+  if (loading)
+    return <>Loading ...</>
+
   return (
     <div>
-      <StorageUser />
       <form onSubmit={fetchShippingRates}>
         <h2>Adresse de destination</h2>
         <input
@@ -142,6 +156,7 @@ const ShippingPage = () => {
         </ul>
       )}
       {error && <p className="text-red-600">{error}</p>}
+      {/* <FetchAddress addressTo={addressTo}/> */}
     </div>
   );
 };

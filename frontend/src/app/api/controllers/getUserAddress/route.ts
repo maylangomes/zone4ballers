@@ -18,8 +18,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-
-
     return NextResponse.json(userTest, { status: 200 });
   } catch (error) {
     console.error('erreur try get address', error);

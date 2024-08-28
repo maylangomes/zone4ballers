@@ -132,13 +132,13 @@ export default function Card({ product, onAddToBasket }: CardProps) {
           </div>
         )}
         <button
-          className="bg-teal-500 text-white px-4 py-2 rounded"
+          className="bg-teal-500 text-white px-4 py-2 rounded mr-2"
           onClick={handleClick}
         >
           Details
         </button>
         <button
-          className="bg-teal-500 text-white px-4 py-2 rounded ml-2"
+          className="bg-teal-500 text-white px-4 py-2 rounded mt-2"
           onClick={() => onAddToBasket(product)}
         >
           Add to basket

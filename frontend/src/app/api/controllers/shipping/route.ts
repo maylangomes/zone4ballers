@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
         provider: rate.provider,
         amount: rate.amount,
         currency: rate.currency,
-      }));      
+      }));
 
       return NextResponse.json(detailedRates, { status: 200 });
     } else {

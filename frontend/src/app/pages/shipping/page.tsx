@@ -1,7 +1,7 @@
 'use client';
 import { FormEvent, useState } from 'react';
 
-const HomePage = () => {
+const ShippingPage = () => {
   const [addressTo, setAddressTo] = useState({
     name: '',
     street1: '',
@@ -132,4 +132,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default ShippingPage;

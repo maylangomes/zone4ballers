@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
   try {
     const addressFrom = await shippo.addresses.create({
       name: name,
-      street1: '215 Clayton St.',
+      street1: street,
       city: 'San Francisco',
       state: 'CA',
       zip: '94117',

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface BasketItem {
   id: number;
@@ -14,6 +15,7 @@ interface BasketProps {
 }
 
 const Basket: React.FC<BasketProps> = ({ items, onRemove, onClear }) => {
+  const router = useRouter();
   // console.log('items : ', items);
   useEffect(() => {
     const itemList = JSON.parse(localStorage.getItem('basket'));
@@ -66,6 +68,12 @@ const Basket: React.FC<BasketProps> = ({ items, onRemove, onClear }) => {
               className="bg-teal-500 text-white px-4 py-2 rounded mt-4"
             >
               Clear Basket
+            </button>
+            <button
+              onClick={() => router.push('/pages/shipping')}
+              className="bg-teal-500 text-white px-4 py-2 rounded mt-4"
+            >
+              Buy
             </button>
           </div>
         </div>

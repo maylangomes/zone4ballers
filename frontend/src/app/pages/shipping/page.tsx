@@ -80,15 +80,14 @@ const ShippingPage = () => {
     }
   };
 
-  const handleShipping = async ({ provider }) => {
+  const handleShipping = async ({ provider, amount }) => {
     try {
       const response = await fetch('/api/controllers/addShippingController', {
         method: 'POST',
-        body: JSON.stringify({ provider }),
+        body: JSON.stringify({ provider, amount }),
       });
 
-      console.log("PROVIDEEER", provider);
-      
+      console.log('PROVIDEEER', provider, amount);
 
       if (!response.ok) {
         const errorMessage = await response.text();
@@ -102,69 +101,78 @@ const ShippingPage = () => {
 
   if (loading) return <>Loading ...</>;
 
-  console.log("SHIPPING RATES", shippingRates);
-  
+  console.log('SHIPPING RATES', shippingRates);
 
   return (
     <div>
       <form onSubmit={fetchShippingRates}>
-        <h2>Adresse de destination</h2>
-        <input
-          type="text"
-          placeholder="Name"
-          name="name"
-          value={addressTo.name}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="Street"
-          name="street1"
-          value={addressTo.street1}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="City"
-          name="city"
-          value={addressTo.city}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="State"
-          name="state"
-          value={addressTo.state}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="Zip"
-          name="zip"
-          value={addressTo.zip}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="Country"
-          name="country"
-          value={addressTo.country}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="Phone"
-          name="phone"
-          value={addressTo.phone}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          placeholder="Email"
-          name="email"
-          value={addressTo.email}
-          onChange={handleInputChange}
-        />
+        <h2 className="text-2xl font-bold mb-4">Adresse de destination</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <input
+            type="text"
+            placeholder="Name"
+            name="name"
+            value={addressTo.name}
+            onChange={handleInputChange}
+            className="border p-2 rounded w-full"
+          />
+          <input
+            type="text"
+            placeholder="Street"
+            name="street1"
+            value={addressTo.street1}
+            onChange={handleInputChange}
+            className="border p-2 rounded w-full"
+          />
+          <input
+            type="text"
+            placeholder="City"
+            name="city"
+            value={addressTo.city}
+            onChange={handleInputChange}
+            className="border p-2 rounded w-full"
+          />
+          <input
+            type="text"
+            placeholder="State"
+            name="state"
+            value={addressTo.state}
+            onChange={handleInputChange}
+            className="border p-2 rounded w-full"
+          />
+          <input
+            type="text"
+            placeholder="Zip"
+            name="zip"
+            value={addressTo.zip}
+            onChange={handleInputChange}
+            className="border p-2 rounded w-full"
+          />
+          <input
+            type="text"
+            placeholder="Country"
+            name="country"
+            value={addressTo.country}
+            onChange={handleInputChange}
+            className="border p-2 rounded w-full"
+          />
+          <input
+            type="text"
+            placeholder="Phone"
+            name="phone"
+            value={addressTo.phone}
+            onChange={handleInputChange}
+            className="border p-2 rounded w-full"
+          />
+          <input
+            type="text"
+            placeholder="Email"
+            name="email"
+            value={addressTo.email}
+            onChange={handleInputChange}
+            className="border p-2 rounded w-full"
+          />
+        </div>
 
         <button type="submit" disabled={loading}>
           {loading ? 'Chargement...' : "Obtenir les tarifs d'expédition"}
@@ -172,18 +180,29 @@ const ShippingPage = () => {
       </form>
 
       {shippingRates.length > 0 && (
-        <ul>
-          {shippingRates.map((rate, index) => (
-            <li key={index}>
-              <strong>Transporteur:</strong> {rate.provider} <br />
-              <strong>Montant:</strong> {rate.amount} {rate.currency} <br />
-              <button onClick={() => handleShipping(rate)}>
-                Choose this option {rate.provider}
-              </button>
-              <hr />
-            </li>
-          ))}
-        </ul>
+        <div className="mt-8 text-center">
+          <h2 className="text-xl font-bold mb-4">
+            Tarifs d'expédition disponibles :
+          </h2>
+          <ul className="space-y-4">
+            {shippingRates.map((rate, index) => (
+              <li key={index} className="border p-4 rounded shadow">
+                <p>
+                  <strong>Transporteur:</strong> {rate.provider}
+                </p>
+                <p>
+                  <strong>Montant:</strong> {rate.amount} {rate.currency}
+                </p>
+                <button
+                  onClick={() => handleShipping(rate)}
+                  className="mt-2 bg-green-500 text-white p-2 rounded hover:bg-green-600"
+                >
+                  Choisir cette option {rate.provider}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
       {error && <p className="text-red-600">{error}</p>}
     </div>

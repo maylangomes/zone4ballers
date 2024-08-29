@@ -3,22 +3,21 @@ import { supabase } from '../../../../../utils/supabase/client';
 
 export async function POST(request: NextRequest) {
   try {
-    const { provider } = await request.json();
+    const { provider, amount } = await request.json();
 
     console.log(provider);
-    
 
     const { data, error } = await supabase
       .from('delivery_methods')
-      .insert([{ name: provider }])
+      .insert([{ name: provider, cost: amount }])
       .select();
 
-      if (error) {
-        return NextResponse.json(
-          { message: 'Error adding shipping', error },
-          { status: 500 },
-        );
-      }
+    if (error) {
+      return NextResponse.json(
+        { message: 'Error adding shipping', error },
+        { status: 500 },
+      );
+    }
 
     return NextResponse.json(
       { message: 'Requete shipping accepted' },

@@ -16,7 +16,7 @@ const ShippingPage = () => {
   const [loading, setLoading] = useState(true);
   const [shippingRates, setShippingRates] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-  let user = "";
+  let user = '';
 
   if (typeof window !== 'undefined') {
     user = localStorage.getItem('username');
@@ -30,25 +30,24 @@ const ShippingPage = () => {
   useEffect(() => {
     const fetchAddress = async () => {
       try {
-          const userAddress = await fetch('/api/controllers/getUserAddress', {
-              method: 'POST',
-              body: JSON.stringify({ user }),
-            });
-      
-            // console.log('USERNAAME', user);
-      
-            const userData = await userAddress.json();
-            console.log(userData);
-            addressTo.name = userData[0].name;
-            addressTo.street1 = userData[0].street
-            addressTo.city = userData[0].city;
-            addressTo.email = userData[0].email;
-            addressTo.zip = userData[0].zip;
-            addressTo.country = userData[0].country;
-            addressTo.phone = userData[0].phone;
-            setLoading(false)
+        const userAddress = await fetch('/api/controllers/getUserAddress', {
+          method: 'POST',
+          body: JSON.stringify({ user }),
+        });
+
+        // console.log('USERNAAME', user);
+
+        const userData = await userAddress.json();
+        addressTo.name = userData[0].name;
+        addressTo.street1 = userData[0].street;
+        addressTo.city = userData[0].city;
+        addressTo.email = userData[0].email;
+        addressTo.zip = userData[0].zip;
+        addressTo.country = userData[0].country;
+        addressTo.phone = userData[0].phone;
+        setLoading(false);
       } catch (error) {
-          console.error('Error catch fetch address', error);
+        console.error('Error catch fetch address', error);
       }
     };
     fetchAddress();
@@ -81,8 +80,30 @@ const ShippingPage = () => {
     }
   };
 
-  if (loading)
-    return <>Loading ...</>
+  const handleShipping = async ({ provider }) => {
+    try {
+      const response = await fetch('/api/controllers/addShippingController', {
+        method: 'POST',
+        body: JSON.stringify({ provider }),
+      });
+
+      console.log("PROVIDEEER", provider);
+      
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        console.error('Server error response handleShipping:', errorMessage);
+        throw new Error(`Error handleShipping: ${errorMessage}`);
+      }
+    } catch (error) {
+      console.error('Error try handleShipping', error);
+    }
+  };
+
+  if (loading) return <>Loading ...</>;
+
+  console.log("SHIPPING RATES", shippingRates);
+  
 
   return (
     <div>
@@ -156,13 +177,15 @@ const ShippingPage = () => {
             <li key={index}>
               <strong>Transporteur:</strong> {rate.provider} <br />
               <strong>Montant:</strong> {rate.amount} {rate.currency} <br />
+              <button onClick={() => handleShipping(rate)}>
+                Choose this option {rate.provider}
+              </button>
               <hr />
             </li>
           ))}
         </ul>
       )}
       {error && <p className="text-red-600">{error}</p>}
-      {/* <FetchAddress addressTo={addressTo}/> */}
     </div>
   );
 };

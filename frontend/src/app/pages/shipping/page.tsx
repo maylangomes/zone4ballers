@@ -38,8 +38,14 @@ const ShippingPage = () => {
             // console.log('USERNAAME', user);
       
             const userData = await userAddress.json();
-            //console.log(userData);
+            console.log(userData);
+            addressTo.name = userData[0].name;
+            addressTo.street1 = userData[0].street
             addressTo.city = userData[0].city;
+            addressTo.email = userData[0].email;
+            addressTo.zip = userData[0].zip;
+            addressTo.country = userData[0].country;
+            addressTo.phone = userData[0].phone;
             setLoading(false)
       } catch (error) {
           console.error('Error catch fetch address', error);

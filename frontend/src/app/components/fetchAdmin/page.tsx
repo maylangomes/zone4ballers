@@ -1,8 +1,8 @@
-
 import { useEffect } from 'react';
 
-
-const FetchAdmin: React.FC<{ setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>}> = ({ setIsAdmin }) => {
+const FetchAdmin: React.FC<{
+  setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setIsAdmin }) => {
   useEffect(() => {
     const fetchAdminStatus = async () => {
       try {

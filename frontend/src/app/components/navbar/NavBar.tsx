@@ -14,18 +14,17 @@ const NavBar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Article[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
-  const [isAdmin, setIsAdmin] = useState(false);""
+  const [isAdmin, setIsAdmin] = useState(false);
+  ('');
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchArticles = async () => {
-      const { data, error } = await supabase
-        .from('product')
-        .select('id, name'); 
+      const { data, error } = await supabase.from('product').select('id, name');
       if (error) {
         console.error('Error fetching articles:', error);
       } else {
-        setArticles(data || []); 
+        setArticles(data || []);
       }
     };
 
@@ -60,7 +59,7 @@ const NavBar: React.FC = () => {
     if (selectedId) {
       router.push(`/pages/detailsProducts/${selectedId}`);
     }
-  }, [selectedId, router]); 
+  }, [selectedId, router]);
 
   return (
     <nav className={styles.nav}>

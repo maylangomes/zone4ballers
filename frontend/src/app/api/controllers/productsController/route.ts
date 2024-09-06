@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       throw new Error(error.message);
-    }    
+    }
 
     const products = dataProducts.map((product) => ({
       ...product,

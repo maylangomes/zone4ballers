@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     if (!productId || !file) {
       return NextResponse.json(
         { message: 'Product ID and file are required' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -18,13 +18,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       { message: 'Image uploaded successfully', imageUrl },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error('Server error:', error);
     return NextResponse.json(
       { message: 'Internal server error', error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

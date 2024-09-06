@@ -14,8 +14,6 @@ export async function POST(request: NextRequest) {
     const zip = formData.get('zip') as string;
     const country = formData.get('country') as string;
 
-
-
     if (!name || !email || !password || !profileImage) {
       return NextResponse.json(
         { message: 'Please fill in all inputs' },
@@ -23,7 +21,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await createUser(name, email, password, profileImage, street, city, state, zip, country);
+    await createUser(
+      name,
+      email,
+      password,
+      profileImage,
+      street,
+      city,
+      state,
+      zip,
+      country,
+    );
 
     return NextResponse.json(
       { message: 'Congrats! Your account has been created' },

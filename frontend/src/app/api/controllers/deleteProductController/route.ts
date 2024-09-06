@@ -5,14 +5,13 @@ export async function POST(request: NextRequest) {
   try {
     const { id } = await request.json();
     const { data: image, error: imageError } = await supabase
-    .from('image')
-    .delete()
-    .eq('product_id', id);
+      .from('image')
+      .delete()
+      .eq('product_id', id);
 
     if (imageError) {
       throw new Error('error deleting image');
     }
-    
 
     const { data, error } = await supabase
       .from('product')

@@ -3,7 +3,6 @@ import { supabase } from '../../../../../utils/supabase/client';
 
 export async function POST() {
   try {
-
     const { data, error } = await supabase.from('category').select('*');
 
     if (error) {

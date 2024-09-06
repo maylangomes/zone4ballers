@@ -12,7 +12,10 @@ interface FetchIdProductProps {
   setLoading: (loading: boolean) => void;
 }
 
-const FetchIdProduct: React.FC<FetchIdProductProps> = ({ setProduct, setLoading }) => {
+const FetchIdProduct: React.FC<FetchIdProductProps> = ({
+  setProduct,
+  setLoading,
+}) => {
   useEffect(() => {
     const productId = localStorage.getItem('selectedProductId');
 

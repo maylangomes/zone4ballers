@@ -58,7 +58,6 @@ export default function Card({ product, onAddToBasket }: CardProps) {
 
         const data = await response.json();
 
-
         setColorName(data.colorPrice.name ? data.colorPrice.name : 'No color');
       } catch (error) {
         console.error('Error try fetch color');

@@ -5,25 +5,23 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { data, error } = await supabase
-      .from('product')
-      .insert([
-        {
-          name: body.name,
-          description: body.description,
-          price: parseFloat(body.price),
-          details: body.details,
-          stock: body.stock,
-          category_id: body.category_id,
-          color_id: body.color_id,
-          size: body.size,
-          rating: body.rating,
-          country: body.country,
-          is_available: true,
-          is_new: false,
-          is_promoted: false,
-        },
-      ]);
+    const { data, error } = await supabase.from('product').insert([
+      {
+        name: body.name,
+        description: body.description,
+        price: parseFloat(body.price),
+        details: body.details,
+        stock: body.stock,
+        category_id: body.category_id,
+        color_id: body.color_id,
+        size: body.size,
+        rating: body.rating,
+        country: body.country,
+        is_available: true,
+        is_new: false,
+        is_promoted: false,
+      },
+    ]);
 
     if (error) {
       throw new Error(error.message);

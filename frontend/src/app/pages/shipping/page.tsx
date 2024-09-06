@@ -2,8 +2,9 @@
 import { FormEvent, useEffect, useState } from 'react';
 import Stripe from 'stripe';
 
-
-const stripe = new Stripe('sk_test_51Pv3HaKBL3DExcL0iJggQBvnjCque0pbaut6Aqdf3X0QiQdcmm01UgB7NC9GyGuuwHVFrcVWsV7bbuTtwq9bpHLr00QWIjm9tk');
+const stripe = new Stripe(
+  'sk_test_51Pv3HaKBL3DExcL0iJggQBvnjCque0pbaut6Aqdf3X0QiQdcmm01UgB7NC9GyGuuwHVFrcVWsV7bbuTtwq9bpHLr00QWIjm9tk',
+);
 
 const ShippingPage = () => {
   const [addressTo, setAddressTo] = useState({
@@ -89,7 +90,6 @@ const ShippingPage = () => {
         body: JSON.stringify({ provider, amount }),
       });
 
-
       if (!response.ok) {
         const errorMessage = await response.text();
         console.error('Server error response handleShipping:', errorMessage);
@@ -101,7 +101,6 @@ const ShippingPage = () => {
   };
 
   if (loading) return <>Loading ...</>;
-
 
   return (
     <div>

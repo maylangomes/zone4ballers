@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     if (!productId) {
       return NextResponse.json(
         { message: 'Product ID is required' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -21,14 +21,13 @@ export async function POST(request: NextRequest) {
       console.error('Error fetching images:', error);
       return NextResponse.json(
         { message: 'Error fetching images', error },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
     const imageUrls = images.map((img) => img.image_url);
 
     return NextResponse.json({ imageUrls }, { status: 200 });
-
   } catch (error) {
     console.error('Server error:', error);
     return NextResponse.json(

@@ -15,10 +15,9 @@ export async function POST(request: NextRequest) {
     }
 
     const users = await getAllUsers();
-    
+
     const user = users.find((item) => item.name === username);
     const userId = user.id;
-    
 
     if (user) {
       const isPasswordValid = bcrypt.compareSync(password, user.password);
@@ -35,7 +34,7 @@ export async function POST(request: NextRequest) {
           path: '/',
           maxAge: 60 * 60 * 24,
         });
-        
+
         return response;
       } else {
         return NextResponse.json(

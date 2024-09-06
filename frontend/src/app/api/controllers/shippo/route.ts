@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   const state = formData.get('state') as string;
   const zip = formData.get('zip') as string;
   const country = formData.get('country') as string;
-  const phone = formData.get('phone') as string || null;
+  const phone = (formData.get('phone') as string) || null;
   const email = formData.get('email') as string;
 
   try {
@@ -29,11 +29,9 @@ export async function POST(request: NextRequest) {
       email: email,
     });
 
-    
-
     const { data, error } = await supabase
       .from('delivery_address')
-      .insert([{ name, phone, email }]);    
+      .insert([{ name, phone, email }]);
 
     if (error) {
       throw new Error(error.message);

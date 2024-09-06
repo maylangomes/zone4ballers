@@ -84,7 +84,7 @@ export default function AddArticleForm() {
     e.preventDefault();
 
     const isConfirmed = confirm('Are you sure you want to add this article?');
-    
+
     if (!isConfirmed) {
       return;
     }

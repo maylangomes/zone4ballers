@@ -1,14 +1,18 @@
 import { useEffect, useRef } from 'react';
 import { FetchProductsProps } from '@/app/types/type';
 
-const FetchProducts = ({ setProducts, setLoadingProducts, filter }: FetchProductsProps) => {
+const FetchProducts = ({
+  setProducts,
+  setLoadingProducts,
+  filter,
+}: FetchProductsProps) => {
   const prevFilterRef = useRef(filter);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoadingProducts(true);
-        
+
         const response = await fetch('/api/controllers/productsController', {
           method: 'POST',
           headers: {
@@ -31,7 +35,10 @@ const FetchProducts = ({ setProducts, setLoadingProducts, filter }: FetchProduct
       }
     };
 
-    if (JSON.stringify(prevFilterRef.current) !== JSON.stringify(filter) || prevFilterRef.current === filter) {
+    if (
+      JSON.stringify(prevFilterRef.current) !== JSON.stringify(filter) ||
+      prevFilterRef.current === filter
+    ) {
       fetchProducts();
       prevFilterRef.current = filter;
     }

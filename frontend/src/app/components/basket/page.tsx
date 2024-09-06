@@ -16,7 +16,6 @@ interface BasketProps {
 
 const Basket: React.FC<BasketProps> = ({ items, onRemove, onClear }) => {
   const router = useRouter();
-  // console.log('items : ', items);
   useEffect(() => {
     const itemList = JSON.parse(localStorage.getItem('basket'));
     const fetchBasket = async () => {
@@ -26,7 +25,6 @@ const Basket: React.FC<BasketProps> = ({ items, onRemove, onClear }) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ itemList }),
         });
-        console.log('ITEEEEMS', itemList);
       } catch (error) {
         console.error('Error fetch basket', error);
       }

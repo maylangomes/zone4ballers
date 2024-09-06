@@ -16,7 +16,6 @@ const FetchAdmin: React.FC<{ setIsAdmin: React.Dispatch<React.SetStateAction<boo
         if (response.ok) {
           const data = await response.json();
           setIsAdmin(data.isAdmin);
-          // console.log('ADMIN STATUS:', data.isAdmin);
         } else {
           console.error('Error fetching admin status:', response.statusText);
         }

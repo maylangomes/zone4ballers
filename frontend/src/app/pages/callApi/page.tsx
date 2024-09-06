@@ -49,7 +49,7 @@ const CreateAddressForm = () => {
 
         setShowResponse(data);
       } else {
-        console.log('error response :', data.error);
+        console.error('error response :', data.error);
       }
     } catch (error: any) {
       setShowError(error.message);

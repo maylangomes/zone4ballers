@@ -21,26 +21,21 @@ export async function POST(request: NextRequest) {
     const addressFrom = await shippo.addresses.create({
       name: name,
       street1: street,
-      city: 'San Francisco',
-      state: 'CA',
-      zip: '94117',
-      country: 'US',
+      city: city,
+      state: state,
+      zip: zip,
+      country: country,
       phone: phone,
-      email: 'shippotle@shippo.com',
+      email: email,
     });
 
     
 
     const { data, error } = await supabase
       .from('delivery_address')
-      .insert([{ name, phone, email }]);
-
-    console.log('Adresse créée avec succès :', addressFrom);
-    console.log("DATA : ", data);
-    
+      .insert([{ name, phone, email }]);    
 
     if (error) {
-      console.log("error requete supabase");
       throw new Error(error.message);
     }
 

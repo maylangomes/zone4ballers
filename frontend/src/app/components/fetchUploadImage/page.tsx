@@ -18,7 +18,6 @@ async function uploadProductImage(productId: number, selectedFile: any) {
     }
 
     const data = await response.json();
-    // console.log('Image uploaded successfully:', data.imageUrl);
     alert('Image uploaded successfully!');
   } catch (error) {
     console.error('Error uploading image:', error);

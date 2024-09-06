@@ -44,7 +44,6 @@ export default function Card({ product, onAddToBasket }: CardProps) {
   useEffect(() => {
     const fetchColor = async () => {
       try {
-        // console.log('BODY COLOR ID:', JSON.stringify({ colorId: product.color_id }));
         const response = await fetch('api/controllers/colorIdController', {
           method: 'POST',
           headers: {
@@ -59,7 +58,6 @@ export default function Card({ product, onAddToBasket }: CardProps) {
 
         const data = await response.json();
 
-        // console.log('Data color : ', data);
 
         setColorName(data.colorPrice.name ? data.colorPrice.name : 'No color');
       } catch (error) {
@@ -86,7 +84,6 @@ export default function Card({ product, onAddToBasket }: CardProps) {
         }
 
         const data = await response.json();
-        console.log('Fetched image URLs:', data.imageUrls);
         setProductImages(data.imageUrls);
       } catch (error) {
         console.error('Error fetching product images:', error);

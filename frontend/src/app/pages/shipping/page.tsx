@@ -1,5 +1,9 @@
 'use client';
 import { FormEvent, useEffect, useState } from 'react';
+import Stripe from 'stripe';
+
+
+const stripe = new Stripe('sk_test_51Pv3HaKBL3DExcL0iJggQBvnjCque0pbaut6Aqdf3X0QiQdcmm01UgB7NC9GyGuuwHVFrcVWsV7bbuTtwq9bpHLr00QWIjm9tk');
 
 const ShippingPage = () => {
   const [addressTo, setAddressTo] = useState({
@@ -34,8 +38,6 @@ const ShippingPage = () => {
           method: 'POST',
           body: JSON.stringify({ user }),
         });
-
-        // console.log('USERNAAME', user);
 
         const userData = await userAddress.json();
         addressTo.name = userData[0].name;
@@ -87,7 +89,6 @@ const ShippingPage = () => {
         body: JSON.stringify({ provider, amount }),
       });
 
-      console.log('PROVIDEEER', provider, amount);
 
       if (!response.ok) {
         const errorMessage = await response.text();
@@ -101,7 +102,6 @@ const ShippingPage = () => {
 
   if (loading) return <>Loading ...</>;
 
-  console.log('SHIPPING RATES', shippingRates);
 
   return (
     <div>

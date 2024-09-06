@@ -16,7 +16,6 @@ const FetchUsers = ({ setUsers, setLoadingUsers }: FetchUsersProps) => {
           throw new Error('Error response fetch users');
         }
         const data = await response.json();
-        // console.log('Users fetched:', data);
         setUsers(data);
       } catch (error) {
         console.error('Error catch fetch users:', error);

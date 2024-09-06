@@ -5,7 +5,6 @@ export async function POST(request: NextRequest) {
   try {
     const { provider, amount } = await request.json();
 
-    console.log(provider);
 
     const { data, error } = await supabase
       .from('delivery_methods')

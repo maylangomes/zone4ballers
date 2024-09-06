@@ -1,10 +1,8 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '../../../../../utils/supabase/client';
 
-export async function POST(request: Request) {
+export async function POST() {
   try {
-    const body = await request.json();
-    // console.log('Request body:', body);
 
     const { data, error } = await supabase.from('category').select('*');
 

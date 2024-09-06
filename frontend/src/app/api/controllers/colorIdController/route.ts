@@ -4,9 +4,6 @@ import { supabase } from '../../../../../utils/supabase/client';
 export async function POST(request: NextRequest) {
   try {
     const { colorId } = await request.json();
-
-    // console.log('colorID :', colorId);
-
     const { data: colorPrice, error } = await supabase
       .from('color')
       .select('name, pourcentage_price')
@@ -20,8 +17,6 @@ export async function POST(request: NextRequest) {
         { status: 500 },
       );
     }
-    // console.log('DATA POURCENTAGE', colorPrice);
-
     const { data: products, error: productError } = await supabase
       .from('product')
       .select('id, price')
@@ -36,11 +31,10 @@ export async function POST(request: NextRequest) {
     }
 
     const adjustedPrices = products.map((product) => {
-      const adjustedPrice = product.price * (1 + colorPrice.pourcentage_price / 100);
+      const adjustedPrice =
+        product.price * (1 + colorPrice.pourcentage_price / 100);
       return { productId: product.id, adjustedPrice };
     });
-
-    // console.log('Adjusted Prices:', adjustedPrices);
 
     return NextResponse.json({ colorPrice, adjustedPrices }, { status: 200 });
   } catch (error) {

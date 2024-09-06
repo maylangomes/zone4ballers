@@ -153,7 +153,6 @@ export default function AdminCard({
   useEffect(() => {
     const fetchColor = async () => {
       try {
-        // console.log('BODY COLOR ID:', product.color_id );
         const response = await fetch('/api/controllers/colorIdController', {
           method: 'POST',
           headers: {
@@ -440,7 +439,7 @@ export default function AdminCard({
           {!product.is_promoted ? (
             <p className="text-teal-500 font-bold mb-4"></p>
           ) : (
-            <p className="text-teal-500 font-bold mb-4">On sale</p>
+            <p className="text-blue-500 font-bold mb-4">ON SALE</p>
           )}
           {!product.is_new ? (
             <p className="text-teal-500 font-bold mb-4"></p>

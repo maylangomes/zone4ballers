@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
     const users = await getAllUsers();
     
     const user = users.find((item) => item.name === username);
-    console.log("USEEEEER ID : ", user.id);
     const userId = user.id;
     
 
@@ -36,7 +35,6 @@ export async function POST(request: NextRequest) {
           path: '/',
           maxAge: 60 * 60 * 24,
         });
-        console.log("RESPOOOONSE: ", response);
         
         return response;
       } else {

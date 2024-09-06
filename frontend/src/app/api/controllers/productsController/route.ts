@@ -4,7 +4,6 @@ import { supabase } from '../../../../../utils/supabase/client';
 export async function POST(request: NextRequest) {
   try {
     const { filter } = await request.json();
-    // console.log('Request filter:', filter);
 
     let query = supabase.from('product').select(`
         id,
@@ -40,9 +39,6 @@ export async function POST(request: NextRequest) {
       category: product.category[0],
       is_available: product.stock > 0 ? true : false,
     }));
-
-    // console.log('Number of products:', products.length);
-
     return NextResponse.json(products, { status: 200 });
   } catch (error) {
     console.error('Error fetching products:', error.message);

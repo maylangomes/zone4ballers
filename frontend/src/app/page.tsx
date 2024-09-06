@@ -15,10 +15,8 @@ import AddArticleForm from './components/addArticleForm/page';
 import Navbar from '../app/components/navbar/NavBar';
 
 export default function Home() {
-  const [users, setUsers] = useState<any[]>([]);
   const [products, setProducts] = useState<ProductWithCategory[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
-  const [loadingUsers, setLoadingUsers] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>(
@@ -38,9 +36,7 @@ export default function Home() {
 
   const handleProductDelete = (id: number) => {
     setProducts((prevProducts) => {
-      // console.log(prevProducts);
       let filter = prevProducts.filter((product) => product.id !== id);
-      // console.log('filter :', filter);
       return filter;
     });
   };
@@ -98,35 +94,6 @@ export default function Home() {
             onClear={handleClearBasket}
           />
         </div>
-        {/* <div className="mt-8">
-        <FetchUsers setUsers={setUsers} setLoadingUsers={setLoadingUsers} />
-        {loadingUsers ? (
-          <p>Loading users...</p>
-        ) : (
-          <div>
-            <h2>Users :</h2>
-            {users.map((user) => (
-              <div key={user.id}>
-                <h3>{user.name}</h3>
-                <p>Email: {user.email}</p>
-                {user.profile_image_url ? (
-                  <img
-                    src={user.profile_image_url}
-                    alt={`${user.name}'s profile`}
-                    style={{
-                      width: '100px',
-                      height: '100px',
-                      borderRadius: '50%',
-                    }}
-                  />
-                ) : (
-                  <p>No profile picture</p>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div> */}
       </div>
     </div>
   );

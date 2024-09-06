@@ -17,7 +17,9 @@ export const getAllProducts = async () => {
       is_available,
       is_new,
       is_promoted,
-      store_id
+      store_id,
+      click,
+      franchise
     `);
 
   if (error) {

@@ -21,7 +21,9 @@ export async function POST(request: NextRequest) {
         country,
         is_new,
         is_promoted,
-        store_id
+        store_id,
+        click,
+        franchise
       `);
 
     if (filter.categoryId) {

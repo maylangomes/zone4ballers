@@ -12,6 +12,7 @@ export default function AddArticleForm() {
     size: '',
     rating: '',
     country: '',
+    franchise: '',
   });
 
   const [categories, setCategories] = useState<{ id: number; name: string }[]>(
@@ -180,6 +181,15 @@ export default function AddArticleForm() {
           placeholder="Country"
           onChange={handleChange}
           value={formData.country}
+          className="border p-2 mb-2 w-full"
+          required
+        />
+        <input
+          type="text"
+          name="franchise"
+          placeholder="Franchise"
+          onChange={handleChange}
+          value={formData.franchise}
           className="border p-2 mb-2 w-full"
           required
         />

@@ -20,7 +20,9 @@ export const getProductWithCategory = async (productId: string) => {
         is_available,
         is_new,
         is_promoted,
-        store_id
+        store_id,
+        click,
+        franchise
       `,
       )
       .eq('id', productId)

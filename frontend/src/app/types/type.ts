@@ -26,6 +26,8 @@ export interface ProductWithCategory {
   is_new: boolean;
   is_promoted: boolean;
   store_id: number;
+  click: string;
+  franchise: string;
 }
 
 export interface Product {
@@ -46,6 +48,8 @@ export interface Product {
   is_new: boolean;
   is_promoted: boolean;
   store_id: number;
+  click: string;
+  franchise: string;
 }
 
 export interface CardProps {

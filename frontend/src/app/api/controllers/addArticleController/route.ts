@@ -20,6 +20,7 @@ export async function POST(request: Request) {
         is_available: true,
         is_new: false,
         is_promoted: false,
+        franchise: body.franchise,
       },
     ]);
 

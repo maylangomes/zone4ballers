@@ -32,6 +32,8 @@ export default function AdminCard({
     is_new: product.is_new,
     is_promoted: product.is_promoted,
     store_id: product.store_id,
+    click: product.click,
+    franchise: product.franchise,
   });
   const [productImages, setProductImages] = useState<string[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -426,6 +428,7 @@ export default function AdminCard({
           </p>
           <p className="text-lg font-bold mb-4">Color : {colorName}</p>
           <p className="text-lg font-bold mb-4">Category : {categoryName}</p>
+          <p className="text-lg font-bold mb-4">Franchise : {product.franchise}</p>
           {adjustedPrice !== null && (
             <p className="text-lg font-bold mb-4">
               Final Price : ${adjustedPrice.toFixed(2)}

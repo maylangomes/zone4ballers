@@ -1,10 +1,8 @@
 'use client';
 import { FormEvent, useEffect, useState } from 'react';
-import Stripe from 'stripe';
+import { loadStripe } from '@stripe/stripe-js';
 
-const stripe = new Stripe(
-  'sk_test_51Pv3HaKBL3DExcL0iJggQBvnjCque0pbaut6Aqdf3X0QiQdcmm01UgB7NC9GyGuuwHVFrcVWsV7bbuTtwq9bpHLr00QWIjm9tk',
-);
+const stripePromise = loadStripe('pk_test_51Pv3HaKBL3DExcL070QeBREiswQg8mZNxWAZWcBp4t1DmA4O2MUK3IB4ZsBcRRqSJISxvxVfi5TFQACpQbC9zfxb00yC9soSOd');
 
 const ShippingPage = () => {
   const [addressTo, setAddressTo] = useState({
@@ -85,15 +83,33 @@ const ShippingPage = () => {
 
   const handleShipping = async ({ provider, amount }) => {
     try {
-      const response = await fetch('/api/controllers/addShippingController', {
+      const dbResponse = await fetch('/api/controllers/addShippingController', {
         method: 'POST',
         body: JSON.stringify({ provider, amount }),
       });
 
-      if (!response.ok) {
-        const errorMessage = await response.text();
+      if (!dbResponse.ok) {
+        const errorMessage = await dbResponse.text();
         console.error('Server error response handleShipping:', errorMessage);
         throw new Error(`Error handleShipping: ${errorMessage}`);
+      }
+
+      const stripeResponse = await fetch('/api/controllers/checkoutStripeController', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider, amount }),
+      });
+
+      const stripeData = await stripeResponse.json();
+
+      if (stripeResponse.ok) {
+        const stripe = await stripePromise;
+  
+        if (stripe) {
+          await stripe.redirectToCheckout({ sessionId: stripeData.id });
+        }
+      } else {
+        setError(stripeData.error || 'Erreur lors de la création de la session de paiement.');
       }
     } catch (error) {
       console.error('Error try handleShipping', error);
@@ -101,6 +117,8 @@ const ShippingPage = () => {
   };
 
   if (loading) return <>Loading ...</>;
+
+  console.log('SHIPPING RATES', shippingRates);
 
   return (
     <div>

@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from 'react';
 import { ProductWithCategory } from '@/app/types/type';
 

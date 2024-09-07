@@ -1,3 +1,5 @@
+'use client'
+
 import { Product } from '@/app/types/type';
 
 interface HandleUpdateProps {

@@ -1,3 +1,5 @@
+'use client'
+
 async function uploadProductImage(productId: number, selectedFile: any) {
   try {
     const response = await fetch('/api/controllers/uploadImageController', {

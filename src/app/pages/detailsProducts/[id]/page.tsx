@@ -14,6 +14,7 @@ interface ProductWithCategory extends Product {
 export default function ProductPage() {
   const [product, setProduct] = useState<ProductWithCategory | null>(null);
   const [loading, setLoading] = useState(true);
+  const [productImages, setProductImages] = useState<string[]>([]);
 
   const {
     basketItems,
@@ -21,6 +22,32 @@ export default function ProductPage() {
     handleRemoveFromBasket,
     handleClearBasket,
   } = handleBasket();
+
+  useEffect(() => {
+    const fetchProductImages = async () => {
+      if (!product) return;
+      try {
+        const response = await fetch('/api/controllers/showImageController', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productId: product.id }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching product images');
+        }
+
+        const data = await response.json();
+        setProductImages(data.imageUrls);
+      } catch (error) {
+        console.error('Error fetching product images:', error);
+      }
+    };
+
+    fetchProductImages();
+  }, [product]);
 
   return (
     <div>
@@ -45,9 +72,23 @@ export default function ProductPage() {
             <p className="text-lg font-bold mb-4">Size: {product.size}</p>
             <p className="text-lg font-bold mb-4">Rating: {product.rating}</p>
             <p className="text-lg font-bold mb-4">Country: {product.country}</p>
-            <button className="bg-teal-500 text-white px-4 py-2 rounded">
-              Buy Now
-            </button>
+            {productImages.length > 0 && (
+              <div className="mb-4">
+                {productImages.map((imageUrl, index) => (
+                  <img
+                    key={index}
+                    src={imageUrl}
+                    alt={`Product Image ${index + 1}`}
+                    style={{
+                      width: '100px',
+                      height: '100px',
+                      borderRadius: '8px',
+                      marginRight: '8px',
+                    }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
         <div className="mt-8">

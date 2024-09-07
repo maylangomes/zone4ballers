@@ -17,7 +17,7 @@ export default function AdminCard({
   onUpdate,
   onAddToBasket,
   onProductDelete,
-}: AdminCardProps) {
+}: AdminCardProps): JSX.Element {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [formData, setFormData] = useState<Partial<Product>>({

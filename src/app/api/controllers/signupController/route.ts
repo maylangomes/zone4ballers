@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createUser } from '../../models/signupModel/page';
+import { supabase } from '../../../../../utils/supabase/client';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,25 +18,54 @@ export async function POST(request: NextRequest) {
     if (!name || !email || !password || !profileImage) {
       return NextResponse.json(
         { message: 'Please fill in all inputs' },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
-    await createUser(
-      name,
-      email,
-      password,
-      profileImage,
-      street,
-      city,
-      state,
-      zip,
-      country,
-    );
+    const date = new Date();
+    const timestamp = date.toISOString().replace(/[:.-]/g, '');
+    const imageFileName = `${timestamp}-${email}-${profileImage.name}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('images')
+      .upload(`PDP/${imageFileName}`, profileImage);
+
+    if (uploadError) {
+      throw new Error('Error uploading image');
+    }
+
+    const { data: imageData } = supabase.storage
+      .from('images')
+      .getPublicUrl(`PDP/${imageFileName}`);
+
+    const imageUrl = imageData.publicUrl;
+
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password, salt);
+
+    const { data, error } = await supabase
+      .from('user')
+      .insert([
+        {
+          name,
+          email,
+          password: hashedPassword,
+          profile_image_url: imageUrl,
+          street,
+          city,
+          state,
+          zip,
+          country,
+        },
+      ]);
+
+    if (error) {
+      throw new Error('Error creating user');
+    }
 
     return NextResponse.json(
       { message: 'Congrats! Your account has been created' },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
     console.error(error);

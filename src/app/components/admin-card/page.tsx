@@ -422,13 +422,13 @@ export default function AdminCard({
       ) : (
         <div>
           <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+          <p className="text-lg text-teal-600 underline font-bold mb-4">Franchise : {product.franchise}</p>
           <p className="text-lg font-bold mb-4">{product.description}</p>
           <p className="text-lg font-bold mb-4">
             Without color : ${product.price}
           </p>
           <p className="text-lg font-bold mb-4">Color : {colorName}</p>
           <p className="text-lg font-bold mb-4">Category : {categoryName}</p>
-          <p className="text-lg font-bold mb-4">Franchise : {product.franchise}</p>
           {adjustedPrice !== null && (
             <p className="text-lg font-bold mb-4">
               Final Price : ${adjustedPrice.toFixed(2)}

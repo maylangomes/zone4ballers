@@ -101,6 +101,7 @@ export default function Card({ product, onAddToBasket }: CardProps) {
     <div className="border rounded-lg shadow-lg p-4">
       <div>
         <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
+        <p className="text-lg text-teal-600 underline font-bold mb-4">Franchise : {product.franchise}</p>
         <p className="text-lg font-bold mb-4">{product.description}</p>
         <p className="text-lg font-bold mb-4">${product.price}</p>
         <p className="text-lg font-bold mb-4">Color : {colorName}</p>
